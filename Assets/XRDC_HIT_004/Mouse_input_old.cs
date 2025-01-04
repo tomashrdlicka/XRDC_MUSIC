@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MouseInputHandler : MonoBehaviour
+public class MouseInputHandlerOld : MonoBehaviour
 {
     private Camera mainCamera;
 

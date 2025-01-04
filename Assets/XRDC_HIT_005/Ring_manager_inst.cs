@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RingGridManagerOld : MonoBehaviour
+public class RingGridManager : MonoBehaviour
 {
     [Header("Ring Settings")]
     public int rows = 7;               // Number of vertical cells in each segment
@@ -10,6 +10,7 @@ public class RingGridManagerOld : MonoBehaviour
     public GameObject cellPrefab;      // Prefab for each cell
 
     public NoteCell[,] cells;          // 2D array to hold references to cell objects
+    public NotePlayer notePlayer; 
 
     void Start()
     {
@@ -50,6 +51,7 @@ public class RingGridManagerOld : MonoBehaviour
                 NoteCell cellScript = newCellGO.GetComponent<NoteCell>();
                 cellScript.gridRow = r;
                 cellScript.gridColumn = c;
+                cellScript.notePlayer = notePlayer;
 
                 // Store the cell in the 2D array
                 cells[r, c] = cellScript;

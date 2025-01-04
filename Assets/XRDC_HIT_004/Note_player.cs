@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class NotePlayer : MonoBehaviour
+public class NotePlayerOld : MonoBehaviour
 {
     public RingGridManager gridManager;       // Reference to the manager
     public AudioSource audioSourcePrefab; // A simple AudioSource prefab

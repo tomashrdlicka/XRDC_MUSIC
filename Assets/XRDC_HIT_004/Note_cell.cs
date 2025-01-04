@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NoteCell : MonoBehaviour
+public class NoteCellOld : MonoBehaviour
 {
     public int gridRow;
     public int gridColumn;
@@ -60,6 +60,8 @@ public class NoteCell : MonoBehaviour
         volume = Mathf.Clamp01(volume); //keep volume in [0, 1]
         UpdateColor();
     }
+
+ 
 
     //get whether we have a note
     public bool HasNote() => hasNote;
