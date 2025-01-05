@@ -151,10 +151,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridRow: 0
   gridColumn: 0
-  instrumentType: 0
+  notePlayer: {fileID: 0}
+  globalInstrument: 0
+  cellInstrument: 0
   pitchIndex: 0
   baseGreen: {r: 0, g: 0.3, b: 0, a: 1}
   maxGreen: {r: 0, g: 1, b: 0, a: 1}
+  baseRed: {r: 0.3, g: 0, b: 0, a: 1}
+  maxRed: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &7264792368674110669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,7 +190,7 @@ MonoBehaviour:
   onTouchEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: -1462952879333120}
         m_TargetAssemblyTypeName: NoteCell, Assembly-CSharp
         m_MethodName: ToggleNote
         m_Mode: 1
