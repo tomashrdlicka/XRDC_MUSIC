@@ -8,22 +8,19 @@ public class HandTriggerEvent : MonoBehaviour
     public UnityEvent onTouchEnter; // Event triggered on touch
     public UnityEvent onTouchExit; // Event triggered on touch end
 
-    private bool isTouched = false;
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(handTag)) // Triggered by tagged "Hand"
         {
-            isTouched = !isTouched;
+            onTouchEnter?.Invoke(); // Trigger the onTouchEnter event
+        }
+    }
 
-            if (isTouched)
-            {
-                onTouchEnter?.Invoke(); // Trigger the onTouchEnter event
-            }
-            else
-            {
-                onTouchExit?.Invoke(); // Trigger the onTouchExit event
-            }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag(handTag)) // Triggered by tagged "Hand"
+        {
+            onTouchExit?.Invoke(); // Trigger the onTouchExit event
         }
     }
 }

@@ -3,13 +3,15 @@ using UnityEngine;
 public class TaperedTrail : MonoBehaviour
 {
     public LineRenderer lineRenderer;
-    public float trailDuration = 2f; 
-    public int maxTrailPoints = 50;  
-    public float trailWidth = 0.2f; 
-    private float pointSpacing = 0.1f; 
-    
+    public float trailDuration = 2f;   // Time for the trail to disappear
+    public float pointSpacing = 0.05f; // Distance between points for smoothness
+    public float trailWidth = 0.2f;    // Initial width of the trail
+    public int maxTrailPoints = 100;   // Maximum number of points in the trail
+
     private Vector3 lastPosition;
     private float timeSinceLastPoint;
+    private float[] times; // Time each point has existed
+    private Vector3[] points; // Stored points for smooth interpolation
 
     private void Start()
     {
@@ -18,12 +20,15 @@ public class TaperedTrail : MonoBehaviour
             lineRenderer = GetComponent<LineRenderer>();
         }
         lineRenderer.positionCount = 0;
-        lastPosition = transform.position;
+
+        // Initialize points array
+        points = new Vector3[maxTrailPoints];
+        times = new float[maxTrailPoints];
     }
 
     private void Update()
     {
-        // Add a new point if the object moves enough
+        // Add points dynamically if the object moves enough
         float distance = Vector3.Distance(transform.position, lastPosition);
         if (distance >= pointSpacing)
         {
@@ -31,56 +36,83 @@ public class TaperedTrail : MonoBehaviour
             lastPosition = transform.position;
         }
 
-        // Update the trail over time
+        // Update the trail width and fade effect
         UpdateTrail();
     }
 
     private void AddTrailPoint(Vector3 position)
     {
-        // Add a new point to the LineRenderer
-        lineRenderer.positionCount++;
-        lineRenderer.SetPosition(lineRenderer.positionCount - 1, position);
+        // Shift older points and add the new one at the end
+        for (int i = 0; i < maxTrailPoints - 1; i++)
+        {
+            points[i] = points[i + 1];
+            times[i] = times[i + 1];
+        }
+        points[maxTrailPoints - 1] = position;
+        times[maxTrailPoints - 1] = Time.time;
+
+        // Update LineRenderer points
+        UpdateLineRenderer();
     }
 
     private void UpdateTrail()
     {
-        if (lineRenderer.positionCount == 0) return;
-
-        // Reduce trail width over time
-        float[] widths = new float[lineRenderer.positionCount];
-        for (int i = 0; i < widths.Length; i++)
+        // Remove points that are too old
+        float currentTime = Time.time;
+        for (int i = 0; i < maxTrailPoints; i++)
         {
-            float timeFactor = (float)i / (widths.Length - 1);
-            widths[i] = Mathf.Lerp(0, trailWidth, timeFactor);
+            if (currentTime - times[i] > trailDuration)
+            {
+                RemoveOldestPoint();
+            }
         }
 
-        lineRenderer.widthCurve = CreateWidthCurve(widths);
-
-        // Remove oldest points if trail is too long or has existed too long
-        float elapsedTime = timeSinceLastPoint / trailDuration;
-        if (elapsedTime > 1 || lineRenderer.positionCount > maxTrailPoints)
-        {
-            RemoveOldestPoint();
-        }
+        // Smooth width transition
+        UpdateWidth();
     }
 
     private void RemoveOldestPoint()
     {
-        for (int i = 0; i < lineRenderer.positionCount - 1; i++)
+        for (int i = 1; i < maxTrailPoints; i++)
         {
-            lineRenderer.SetPosition(i, lineRenderer.GetPosition(i + 1));
+            points[i - 1] = points[i];
+            times[i - 1] = times[i];
         }
-        lineRenderer.positionCount--;
+        points[maxTrailPoints - 1] = Vector3.zero;
+        times[maxTrailPoints - 1] = 0;
+        UpdateLineRenderer();
     }
 
-    private AnimationCurve CreateWidthCurve(float[] widths)
+    private void UpdateLineRenderer()
     {
-        AnimationCurve curve = new AnimationCurve();
-        for (int i = 0; i < widths.Length; i++)
+        int activePointCount = 0;
+        for (int i = 0; i < maxTrailPoints; i++)
         {
-            float time = (float)i / (widths.Length - 1);
-            curve.AddKey(time, widths[i]);
+            if (times[i] != 0)
+            {
+                activePointCount++;
+            }
         }
-        return curve;
+
+        lineRenderer.positionCount = activePointCount;
+        for (int i = 0; i < activePointCount; i++)
+        {
+            lineRenderer.SetPosition(i, points[i]);
+        }
+    }
+
+    private void UpdateWidth()
+    {
+        AnimationCurve widthCurve = new AnimationCurve();
+        int activePointCount = lineRenderer.positionCount;
+
+        for (int i = 0; i < activePointCount; i++)
+        {
+            float timeFactor = (float)i / (activePointCount - 1);
+            float width = Mathf.Lerp(0, trailWidth, timeFactor);
+            widthCurve.AddKey(timeFactor, width);
+        }
+
+        lineRenderer.widthCurve = widthCurve;
     }
 }
