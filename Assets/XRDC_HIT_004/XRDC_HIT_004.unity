@@ -6754,6 +6754,9 @@ MonoBehaviour:
   handTag: Hand
   newMaterial: {fileID: 2100000, guid: 3abe57974065a4520a55d95fc17290de, type: 2}
   particlesOn: {fileID: 112169351}
+  InstrumentSelect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &836306189
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6974,6 +6977,9 @@ MonoBehaviour:
   handTag: Hand
   newMaterial: {fileID: 2100000, guid: 3abe57974065a4520a55d95fc17290de, type: 2}
   particlesOn: {fileID: 1780416056}
+  InstrumentSelect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &849456140
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8370,6 +8376,9 @@ MonoBehaviour:
   handTag: Hand
   newMaterial: {fileID: 2100000, guid: 3abe57974065a4520a55d95fc17290de, type: 2}
   particlesOn: {fileID: 1705892599}
+  InstrumentSelect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &969838567
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9098,6 +9107,9 @@ MonoBehaviour:
   handTag: Hand
   newMaterial: {fileID: 2100000, guid: 3abe57974065a4520a55d95fc17290de, type: 2}
   particlesOn: {fileID: 63093535}
+  InstrumentSelect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &1078340541
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9906,6 +9918,9 @@ MonoBehaviour:
   handTag: Hand
   newMaterial: {fileID: 2100000, guid: 3abe57974065a4520a55d95fc17290de, type: 2}
   particlesOn: {fileID: 1759186355}
+  InstrumentSelect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &1158890846
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10040,6 +10055,9 @@ MonoBehaviour:
   handTag: Hand
   newMaterial: {fileID: 2100000, guid: 3abe57974065a4520a55d95fc17290de, type: 2}
   particlesOn: {fileID: 664388999}
+  InstrumentSelect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &1182174307
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11124,7 +11142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a32182a65e5f4c4cb2d79a08e4aea9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridManager: {fileID: 1456386052}
+  gridManager: {fileID: 0}
   audioSourcePrefab: {fileID: 1204226776843690272, guid: 302ddfa09ac3c4460831230bcfa58554,
     type: 3}
   pitchClips:
@@ -11670,6 +11688,9 @@ MonoBehaviour:
   handTag: Hand
   newMaterial: {fileID: 2100000, guid: 3abe57974065a4520a55d95fc17290de, type: 2}
   particlesOn: {fileID: 172672063}
+  InstrumentSelect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &1323455497
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12437,7 +12458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rows: 7
   columns: 12
-  radius: 1
+  radius: 0.2
   verticalSpacing: 0.25
   cellPrefab: {fileID: 6639311250382566893, guid: 6707ab18590ec4cfdbb79fd96e01b303,
     type: 3}
@@ -15686,6 +15707,9 @@ MonoBehaviour:
   handTag: Hand
   newMaterial: {fileID: 2100000, guid: 3abe57974065a4520a55d95fc17290de, type: 2}
   particlesOn: {fileID: 1511573059}
+  InstrumentSelect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &1833385309
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -16450,6 +16474,9 @@ MonoBehaviour:
   handTag: Hand
   newMaterial: {fileID: 2100000, guid: 3abe57974065a4520a55d95fc17290de, type: 2}
   particlesOn: {fileID: 2031825243}
+  InstrumentSelect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &1859334548
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -16515,6 +16542,9 @@ MonoBehaviour:
   handTag: Hand
   newMaterial: {fileID: 2100000, guid: 3abe57974065a4520a55d95fc17290de, type: 2}
   particlesOn: {fileID: 2019518266}
+  InstrumentSelect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &1859334551
 Rigidbody:
   m_ObjectHideFlags: 0

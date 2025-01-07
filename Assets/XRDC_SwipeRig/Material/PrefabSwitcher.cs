@@ -4,6 +4,8 @@ public class PrefabSwitcher : MonoBehaviour
 {
     [SerializeField] private GameObject[] prefabArray = new GameObject[4];
     [SerializeField] private Transform spawnPoint;
+
+    public RingGridManager ringManager;
     private int currentPrefabIndex = 0;
 
     private void Start()
@@ -49,6 +51,7 @@ public class PrefabSwitcher : MonoBehaviour
     {
         int nextIndex = (currentPrefabIndex + 1) % prefabArray.Length;
         ChangePrefab(nextIndex);
+        ringManager.NextInstrument(); 
     }
 
   
