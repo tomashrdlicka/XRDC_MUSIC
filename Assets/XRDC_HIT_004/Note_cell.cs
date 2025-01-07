@@ -5,8 +5,8 @@ public class NoteCellOld : MonoBehaviour
     public int gridRow;
     public int gridColumn;
 
-    private bool hasNote = false;
-    private float volume = 0f; //range: 0.0 - 1.0 (for example)
+    public bool hasNote = false;
+    public float volume = 0f; //range: 0.0 - 1.0 (for example)
     private MeshRenderer meshRenderer;
 
     //min/mas colors

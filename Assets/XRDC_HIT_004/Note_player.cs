@@ -32,17 +32,17 @@ public class NotePlayerOld : MonoBehaviour
             // Check each row in this column
             for (int r = 0; r < rows; r++)
             {
-                if (gridManager.cells[r, c].HasNote())
-                {
+                //if (gridManager.cells[r, c].HasNote())
+                //{
                     //play notes in given time step
                     AudioSource newSource = Instantiate(audioSourcePrefab, transform);
                     newSource.clip = pitchClips[r];
-                    newSource.volume = gridManager.cells[r, c].GetVolume();
+                    //newSource.volume = gridManager.cells[r, c].GetVolume();
                     newSource.Play();
 
                     //destroy after playing
                     Destroy(newSource.gameObject, noteDuration + 0.2f);
-                }
+                //}
             }
             //wait for the note duration before moving on to the next column
             yield return new WaitForSeconds(noteDuration);

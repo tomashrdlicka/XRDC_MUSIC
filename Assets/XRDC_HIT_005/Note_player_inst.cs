@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class NotePlayer : MonoBehaviour
 {
@@ -7,52 +8,42 @@ public class NotePlayer : MonoBehaviour
     public AudioSource audioSourcePrefab;
     public float noteDuration = 0.5f;
 
-    // ───────────────────────────────────────────────────────────────────
-    // Separate arrays for each instrument
-    // ───────────────────────────────────────────────────────────────────
     [Header("Instrument Clips")]
     public AudioClip[] pianoClips;
     public AudioClip[] guitarClips;
-    // etc.
+    // TODO: Add more arrays if you have more instruments
 
-    void Update()
+    private InputActions inputActions;
+
+    void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            PlayComposition();
-        }
+        // Initialize the InputActions
+        inputActions = new InputActions();
+    }
+
+    void OnEnable()
+    {
+        // Enable InputActions and subscribe to the PlayComposition action
+        inputActions.Enable();
+        inputActions.Gameplay.PlayComposition.performed += OnPlayComposition;
+    }
+
+    void OnDisable()
+    {
+        // Unsubscribe and disable InputActions
+        inputActions.Gameplay.PlayComposition.performed -= OnPlayComposition;
+        inputActions.Disable();
+    }
+
+    private void OnPlayComposition(InputAction.CallbackContext context)
+    {
+        // Trigger PlayComposition when the input is performed
+        PlayComposition();
     }
 
     public void PlayComposition()
     {
         StartCoroutine(PlaySequence());
-    }
-
-    public void PlaySingleNote(NoteCell cell)
-    {
-        // 1) Retrieve instrument, pitch, volume from the cell
-        InstrumentType instrument = cell.GetCellInstrument();
-        int pitchIndex = cell.GetPitchIndex();
-        float volume = cell.GetVolume();
-
-        // 2) Get the correct clip
-        AudioClip chosenClip = GetClipByInstrument(instrument, pitchIndex);
-
-        if (chosenClip != null)
-        {
-            // 3) Instantiate an AudioSource to play the note
-            AudioSource newSource = Instantiate(audioSourcePrefab, transform);
-            newSource.clip = chosenClip;
-            newSource.volume = volume;
-            newSource.Play();
-
-            // 4) Destroy it after it finishes
-            Destroy(newSource.gameObject, noteDuration + 0.1f);
-        }
-        else
-        {
-            Debug.LogWarning($"Could not find clip for instrument {instrument} with pitchIndex {pitchIndex}");
-        }
     }
 
     private IEnumerator PlaySequence()
@@ -65,42 +56,60 @@ public class NotePlayer : MonoBehaviour
             for (int r = 0; r < rows; r++)
             {
                 NoteCell cell = gridManager.cells[r, c];
-                if (cell.HasNote())
+
+                // Check every instrument in the enum
+                foreach (InstrumentType instrument in System.Enum.GetValues(typeof(InstrumentType)))
                 {
-                    // 1) Get the instrument & pitch index
-                    InstrumentType instrument = cell.GetCellInstrument();
-                    Debug.Log(instrument);
-                    int pitchIndex = cell.GetPitchIndex();
-                    float volume = cell.GetVolume();
-
-                    // 2) Retrieve the correct clip array
-                    AudioClip chosenClip = GetClipByInstrument(instrument, pitchIndex);
-
-                    if (chosenClip != null)
+                    if (cell.HasNoteForInstrument(instrument))
                     {
-                        // 3) Instantiate and play
-                        AudioSource newSource = Instantiate(audioSourcePrefab, transform);
-                        newSource.clip = chosenClip;
-                        newSource.volume = volume;
-                        newSource.Play();
+                        int pitchIndex = cell.GetPitchIndexForInstrument(instrument);
+                        float volume = cell.GetVolumeForInstrument(instrument);
 
-                        // 4) Clean up
-                        Destroy(newSource.gameObject, noteDuration + 0.1f);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"{instrument} or pitchIndex {pitchIndex} not set correctly.");
+                        // Get the correct clip
+                        AudioClip chosenClip = GetClipByInstrument(instrument, pitchIndex);
+
+                        if (chosenClip != null)
+                        {
+                            Debug.Log($" Row: {r}, Column: {c}  Playing Note - Instrument: {instrument}, PitchIndex: {pitchIndex}, Volume: {volume:F2}");
+                            AudioSource newSource = Instantiate(audioSourcePrefab, transform);
+                            newSource.clip = chosenClip;
+                            newSource.volume = volume;
+                            newSource.Play();
+
+                            Destroy(newSource.gameObject, noteDuration + 0.1f);
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"No clip set for {instrument} pitchIndex={pitchIndex}");
+                        }
                     }
                 }
             }
-            // Wait for the note duration before moving on
             yield return new WaitForSeconds(noteDuration);
         }
     }
 
-    // ───────────────────────────────────────────────────────────────────
-    // Helper Method: Return the correct clip based on instrument & pitch
-    // ───────────────────────────────────────────────────────────────────
+    public void PlaySingleNote(NoteCell cell)
+    {
+        InstrumentType instrument = cell.GetActiveInstrument();
+        if (cell.HasNoteForInstrument(instrument))
+        {
+            int pitchIndex = cell.GetPitchIndexForInstrument(instrument);
+            float volume = cell.GetVolumeForInstrument(instrument);
+
+            AudioClip chosenClip = GetClipByInstrument(instrument, pitchIndex);
+            if (chosenClip != null)
+            {
+                AudioSource newSource = Instantiate(audioSourcePrefab, transform);
+                newSource.clip = chosenClip;
+                newSource.volume = volume;
+                newSource.Play();
+
+                Destroy(newSource.gameObject, noteDuration + 0.1f);
+            }
+        }
+    }
+
     private AudioClip GetClipByInstrument(InstrumentType instrument, int pitchIndex)
     {
         switch (instrument)
@@ -109,17 +118,18 @@ public class NotePlayer : MonoBehaviour
                 if (pitchIndex >= 0 && pitchIndex < pianoClips.Length)
                     return pianoClips[pitchIndex];
                 break;
+
             case InstrumentType.Guitar:
                 if (pitchIndex >= 0 && pitchIndex < guitarClips.Length)
                     return guitarClips[pitchIndex];
                 break;
-            // Add more instruments here as needed
+
+            // TODO: Add more instruments here
         }
-        // If out of range or not assigned
+
         return null;
     }
 }
-
 
 
 

@@ -149,12 +149,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1ee53d84c7948498233934bd970b74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  notePlayer: {fileID: 0}
   gridRow: 0
   gridColumn: 0
-  notePlayer: {fileID: 0}
-  globalInstrument: 0
-  cellInstrument: 0
-  pitchIndex: 0
+  activeInstrument: 0
   baseGreen: {r: 0, g: 0.3, b: 0, a: 1}
   maxGreen: {r: 0, g: 1, b: 0, a: 1}
   baseRed: {r: 0.3, g: 0, b: 0, a: 1}
