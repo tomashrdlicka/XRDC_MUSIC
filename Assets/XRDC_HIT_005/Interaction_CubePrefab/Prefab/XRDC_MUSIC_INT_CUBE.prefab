@@ -116,7 +116,7 @@ PrefabInstance:
     - target: {fileID: -4261824553893246909, guid: 55c0f90fec4f74e269d0085cd64e6008,
         type: 3}
       propertyPath: m_Name
-      value: Drum_Prefab
+      value: Drums_Prefab
       objectReference: {fileID: 0}
     - target: {fileID: -4165147271607456128, guid: 55c0f90fec4f74e269d0085cd64e6008,
         type: 3}
@@ -141,7 +141,7 @@ PrefabInstance:
     - target: {fileID: 8012868283344436289, guid: 55c0f90fec4f74e269d0085cd64e6008,
         type: 3}
       propertyPath: m_Name
-      value: Guitar_Prefab
+      value: Lead_Prefab
       objectReference: {fileID: 0}
     - target: {fileID: 8747831006539667902, guid: 55c0f90fec4f74e269d0085cd64e6008,
         type: 3}

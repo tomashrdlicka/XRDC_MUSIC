@@ -1,5 +1,7 @@
 public enum InstrumentType
 {
     Piano,
-    Guitar
+    Lead,
+    Bass,
+    Drums
 }

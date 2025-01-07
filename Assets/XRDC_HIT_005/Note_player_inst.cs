@@ -10,7 +10,11 @@ public class NotePlayer : MonoBehaviour
 
     [Header("Instrument Clips")]
     public AudioClip[] pianoClips;
-    public AudioClip[] guitarClips;
+    public AudioClip[] leadClips;
+    public AudioClip[] bassClips;
+    public AudioClip[] drumsClips;
+
+
     // TODO: Add more arrays if you have more instruments
 
     private InputActions inputActions;
@@ -119,9 +123,19 @@ public class NotePlayer : MonoBehaviour
                     return pianoClips[pitchIndex];
                 break;
 
-            case InstrumentType.Guitar:
-                if (pitchIndex >= 0 && pitchIndex < guitarClips.Length)
-                    return guitarClips[pitchIndex];
+            case InstrumentType.Lead:
+                if (pitchIndex >= 0 && pitchIndex < leadClips.Length)
+                    return leadClips[pitchIndex];
+                break;
+            
+            case InstrumentType.Bass:
+                if (pitchIndex >= 0 && pitchIndex < bassClips.Length)
+                    return bassClips[pitchIndex];
+                break;
+
+            case InstrumentType.Drums:
+                if (pitchIndex >= 0 && pitchIndex < drumsClips.Length)
+                    return drumsClips[pitchIndex];
                 break;
 
             // TODO: Add more instruments here

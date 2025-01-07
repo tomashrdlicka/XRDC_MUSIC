@@ -36,12 +36,12 @@ public class NoteCell : MonoBehaviour
     }
 
     private Renderer pianoRenderer;
-    private Renderer guitarRenderer;
+    private Renderer leadRenderer;
     private Renderer bassRenderer;
     private Renderer drumsRenderer;
 
     private Color pianoOriginalColor;
-    private Color guitarOriginalColor;
+    private Color leadOriginalColor;
     private Color bassOriginalColor;
     private Color drumsOriginalColor;
 
@@ -68,10 +68,20 @@ public class NoteCell : MonoBehaviour
             Debug.Log("found piano child");
 
         // Repeat for the others
-        Transform guitarChild = transform.Find("Guitar_Prefab");
-        if (guitarChild != null)
-            guitarRenderer = guitarChild.GetComponent<Renderer>();
-            Debug.Log("found guitar child");
+        Transform leadChild = transform.Find("Lead_Prefab");
+        if (leadChild != null)
+            leadRenderer = leadChild.GetComponent<Renderer>();
+            Debug.Log("found lead child");
+
+        Transform bassChild = transform.Find("Bass_Prefab");
+        if (bassChild != null)
+            bassRenderer = bassChild.GetComponent<Renderer>();
+            Debug.Log("found bass child");
+
+        Transform drumsChild = transform.Find("Drums_Prefab");
+        if (drumsChild != null)
+            drumsRenderer = drumsChild.GetComponent<Renderer>();
+            Debug.Log("found drums child");
         
     }
 
@@ -86,8 +96,15 @@ public class NoteCell : MonoBehaviour
         if (pianoRenderer != null)
             pianoOriginalColor = pianoRenderer.material.color;
 
-        if (guitarRenderer != null)
-            guitarOriginalColor = guitarRenderer.material.color;
+        if (leadRenderer != null)
+            leadOriginalColor = leadRenderer.material.color;
+
+        if (bassRenderer != null)
+            bassOriginalColor = bassRenderer.material.color;
+
+        if (drumsRenderer != null)
+            drumsOriginalColor = drumsRenderer.material.color;
+
 
         // Perform any post-initialization operations
         UpdateColor();
@@ -182,20 +199,42 @@ public class NoteCell : MonoBehaviour
                     float pianoV = GetVolume(); 
                     meshRenderer.material.color = new Color(
                         0f,
-                        0.3f + (0.7f * pianoV),
+                        0.3f,
                         0f,
-                        1f
+                        (0.7f * pianoV)
                     );
                     break;
 
-                case InstrumentType.Guitar:
+                case InstrumentType.Lead:
                     // Simple color interpolation from dark red -> bright red
-                    float guitarV = GetVolume();
+                    float leadV = GetVolume();
                     meshRenderer.material.color = new Color(
-                        0.3f + (0.7f * guitarV),
+                        0.3f,
                         0.3f,
                         0f,
-                        1f
+                        0.3f + (0.7f * leadV)
+                    );
+                    break;
+
+                case InstrumentType.Bass:
+                    // Simple color interpolation from dark red -> bright red
+                    float bassV = GetVolume();
+                    meshRenderer.material.color = new Color(
+                        0.3f,
+                        0.7f,
+                        0.4f,
+                        0.3f + (0.7f * bassV)
+                    );
+                    break;
+
+                case InstrumentType.Drums:
+                    // Simple color interpolation from dark red -> bright red
+                    float drumsV = GetVolume();
+                    meshRenderer.material.color = new Color(
+                        0.0f,
+                        0.3f,
+                        0f,
+                        0.3f + (0.7f * drumsV)
                     );
                     break;
             }
@@ -269,16 +308,36 @@ public class NoteCell : MonoBehaviour
                 pianoRenderer.material.color = pianoOriginalColor;
         }
 
-        // For GUITAR child
-        if (guitarRenderer != null)
+        if (leadRenderer != null)
         {
-            bool guitarHasNote = instrumentData[InstrumentType.Guitar].hasNote;
+            bool leadHasNote = instrumentData[InstrumentType.Lead].hasNote;
 
-            if (guitarHasNote)
-                guitarRenderer.material.color = guitarOriginalColor * 2.0f;
+            if (leadHasNote)
+                leadRenderer.material.color = leadOriginalColor * 3.0f;
             else
-                guitarRenderer.material.color = guitarOriginalColor;
+                leadRenderer.material.color = leadOriginalColor;
         }
+
+        if (bassRenderer != null)
+        {
+            bool bassHasNote = instrumentData[InstrumentType.Bass].hasNote;
+
+            if (bassHasNote)
+                bassRenderer.material.color = bassOriginalColor * 3.0f;
+            else
+                bassRenderer.material.color = bassOriginalColor;
+        }
+
+        if (drumsRenderer != null)
+        {
+            bool drumsHasNote = instrumentData[InstrumentType.Drums].hasNote;
+
+            if (drumsHasNote)
+                drumsRenderer.material.color = drumsOriginalColor * 3.0f;
+            else
+                drumsRenderer.material.color = drumsOriginalColor;
+        }
+
 
     }
 
