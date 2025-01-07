@@ -19,9 +19,9 @@ public class PrefabSwitcher : MonoBehaviour
         }
     }
 
-    /// <summary>
+
     /// Changes the current prefab to the one specified by the index in the array.
-    /// </summary>
+  
     /// <param name="index">Index of the prefab to use (0-3).</param>
     public void ChangePrefab(int index)
     {
@@ -42,18 +42,18 @@ public class PrefabSwitcher : MonoBehaviour
         currentPrefabIndex = index;
     }
 
-    /// <summary>
+   
     /// Cycles to the next prefab in the array.
-    /// </summary>
+   
     public void CycleToNextPrefab()
     {
         int nextIndex = (currentPrefabIndex + 1) % prefabArray.Length;
         ChangePrefab(nextIndex);
     }
 
-    /// <summary>
+  
     /// Cycles to the previous prefab in the array.
-    /// </summary>
+ 
     public void CycleToPreviousPrefab()
     {
         int previousIndex = (currentPrefabIndex - 1 + prefabArray.Length) % prefabArray.Length;
