@@ -19,6 +19,8 @@
 */
 
 using UnityEngine;
+using UnityEngine.Events;
+
 
 public class ToggleInteraction : MonoBehaviour
 {
@@ -33,6 +35,8 @@ public class ToggleInteraction : MonoBehaviour
     public GameObject particlesOn;
 
     private bool isTouched = false;
+
+    public UnityEvent InstrumentSelect;
 
     private void Start()
     {
@@ -60,6 +64,8 @@ public class ToggleInteraction : MonoBehaviour
 
                     audioSource.Stop(); // Had 
                     audioSource.PlayOneShot(audioClip); // Play the clip
+
+                    InstrumentSelect.Invoke();
                 }
 
 

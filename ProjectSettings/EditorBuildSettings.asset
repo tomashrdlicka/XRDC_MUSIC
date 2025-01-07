@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/XRDC_HIT_005/XRDC_HIT_005.unity
     guid: 7fcb2e33126404aeba3540d817413534
+  - enabled: 0
+    path: Assets/XRDC_SwipeRig/XRDC_SwipeRig.unity
+    guid: b2e6688a4b99a4418a7ced5a60e5ac4d
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: eea231f3c19144f858cebf36ef68651c,
       type: 2}
