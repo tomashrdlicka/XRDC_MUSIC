@@ -1,347 +1,241 @@
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-
-
+[RequireComponent(typeof(MeshRenderer), typeof(BoxCollider))]
 public class NoteCell : MonoBehaviour
 {
-    
-    private MeshRenderer meshRenderer;
-    public NotePlayer notePlayer;
-    public int gridRow;        // Existing: row index in the grid
+    // --- References ---
+    [Header("References")]
+    public MeshRenderer meshRenderer;
+    public BoxCollider boxCollider;
+    public NotePlayer notePlayer;             // Reference to your NotePlayer script
+    private RingGridManager ringGridManager;  // Found automatically in Awake (parent)
+
+    // --- Grid Indices ---
+    [Header("Grid Settings")]
+    public int gridRow;
     public int gridColumn;
-    // -------------------------------------------------------------
-    //Instrument
-    // -------------------------------------------------------------
+
+    // --- Instrument Management ---
     [SerializeField] private InstrumentType activeInstrument;
-    // -------------------------------------------------------------
 
     // A dictionary from instrument type to that instrument's note data
     private Dictionary<InstrumentType, InstrumentNoteData> instrumentData;
-  
 
-    [System.Serializable]
-    public class InstrumentNoteData
-    {
-        public bool hasNote;
-        public float volume;
-        public int pitchIndex;
-
-        public InstrumentNoteData(bool hasNote = false, float volume = 0f, int pitchIndex = 0)
-        {
-            this.hasNote = hasNote;
-            this.volume = volume;
-            this.pitchIndex = pitchIndex;
-        }
-    }
-
+    // --- Child Renderers (e.g., for Piano, Lead, Bass, Drums) ---
     private Renderer pianoRenderer;
     private Renderer leadRenderer;
     private Renderer bassRenderer;
     private Renderer drumsRenderer;
 
-    private Color pianoOriginalColor;
-    private Color leadOriginalColor;
-    private Color bassOriginalColor;
-    private Color drumsOriginalColor;
-
-    // Existing color fields
-    [SerializeField] private Color baseGreen = new Color(0f, 0.3f, 0f, 1f); 
-    [SerializeField] private Color maxGreen = Color.green;
-    [SerializeField] private Color baseRed = new Color(0.3f, 0f, 0f, 1f);  // Darker red
-    [SerializeField] private Color maxRed = Color.red;                    // Full red (Unity's predefined red)
-    
-
-    void Awake()
+    // --- Unity Lifecycle ---
+    private void Awake()
     {
-        // Initialize the dictionary with one entry per instrument
+        // 1. Find the RingGridManager in the parent chain
+        ringGridManager = GetComponentInParent<RingGridManager>();
+        if (ringGridManager == null)
+        {
+            Debug.LogError($"RingGridManager not found for {gameObject.name}. " +
+                           "Ensure this cell is a child of the RingGridManager GameObject.");
+        }
+
+        // 2. Initialize the instrument data dictionary
         instrumentData = new Dictionary<InstrumentType, InstrumentNoteData>();
-        foreach (InstrumentType instType in System.Enum.GetValues(typeof(InstrumentType)))
+        foreach (InstrumentType instType in Enum.GetValues(typeof(InstrumentType)))
         {
             instrumentData[instType] = new InstrumentNoteData();
         }
 
-            // Attempt to find the child by name
-        Transform pianoChild = transform.Find("Piano_Prefab");
-        if (pianoChild != null)
-            pianoRenderer = pianoChild.GetComponent<Renderer>();
-            Debug.Log("found piano child");
+        // 3. Find child renderers by name (if they exist)
+        pianoRenderer = TryGetChildRenderer("Piano_Prefab");
+        leadRenderer  = TryGetChildRenderer("Lead_Prefab");
+        bassRenderer  = TryGetChildRenderer("Bass_Prefab");
+        drumsRenderer = TryGetChildRenderer("Drums_Prefab");
 
-        // Repeat for the others
-        Transform leadChild = transform.Find("Lead_Prefab");
-        if (leadChild != null)
-            leadRenderer = leadChild.GetComponent<Renderer>();
-            Debug.Log("found lead child");
-
-        Transform bassChild = transform.Find("Bass_Prefab");
-        if (bassChild != null)
-            bassRenderer = bassChild.GetComponent<Renderer>();
-            Debug.Log("found bass child");
-
-        Transform drumsChild = transform.Find("Drums_Prefab");
-        if (drumsChild != null)
-            drumsRenderer = drumsChild.GetComponent<Renderer>();
-            Debug.Log("found drums child");
-        
+        // 4. Get references to this GameObject's MeshRenderer and BoxCollider
+        meshRenderer = GetComponent<MeshRenderer>();
+        boxCollider  = GetComponent<BoxCollider>();
     }
 
-    void Start()
+    private void Start()
     {
-        // Get the MeshRenderer component
-        meshRenderer = GetComponent<MeshRenderer>();
-
-        // Set a default state for the first active instrument
+        // Set default instrument
         activeInstrument = InstrumentType.Piano;
 
-        if (pianoRenderer != null)
-            pianoOriginalColor = pianoRenderer.material.color;
-
-        if (leadRenderer != null)
-            leadOriginalColor = leadRenderer.material.color;
-
-        if (bassRenderer != null)
-            bassOriginalColor = bassRenderer.material.color;
-
-        if (drumsRenderer != null)
-            drumsOriginalColor = drumsRenderer.material.color;
-
-
-        // Perform any post-initialization operations
-        UpdateColor();
-        UpdateChildVisuals();
+        // Initial visual updates
     }
 
-    //get and set cell properties
-    private bool HasNote()
+    // --- Child Renderer Helper ---
+   private Renderer TryGetChildRenderer(string childName)
     {
-        return instrumentData[activeInstrument].hasNote;
-    }
-
-    private float GetVolume()
-    {
-        return instrumentData[activeInstrument].volume;
-    }
-
-    private void SetVolume(float newVolume)
-    {
-        instrumentData[activeInstrument].volume = Mathf.Clamp01(newVolume);
-    }
-
-    private int GetPitchIndex()
-    {
-        return instrumentData[activeInstrument].pitchIndex;
-    }
-
-    public void SetPitchIndex(int newPitchIndex)   
-    {   
-        instrumentData[activeInstrument].pitchIndex = newPitchIndex;
-    }
-    public void SetPitchIndices(int newPitchIndex)
-    {
-        foreach (InstrumentType instType in System.Enum.GetValues(typeof(InstrumentType)))
+        Transform child = transform.Find(childName);
+        if (child != null)
         {
-        if (instrumentData.ContainsKey(instType))
-        {  
-            instrumentData[instType].pitchIndex = newPitchIndex;
+            return child.GetComponent<Renderer>();
+        }
+        return null;
+    }
+
+    // --- Public API to Link to Manager ---
+    public void SetRingGridManager(RingGridManager manager)
+    {
+        ringGridManager = manager;
+    }
+
+    // --- Visibility / Interactivity ---
+    public void DisableRenderers()
+    {
+        // Hide the parent MeshRenderer + BoxCollider
+        meshRenderer.enabled = false;
+        boxCollider.enabled = false;
+
+        // Hide all child MeshRenderers (if any)
+        MeshRenderer[] childRenderers = GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer mr in childRenderers)
+        {
+            mr.enabled = false;
         }
     }
-}
+
+    public void EnableCell()
+    {
+        // Show the parent MeshRenderer + BoxCollider
+        meshRenderer.enabled = true;
+        boxCollider.enabled = true;
+
+        // Show all child MeshRenderers
+    }
 
 
-    public void InitializeInstrumentData(InstrumentType instrumentType, bool hasNote, float volume, int pitchIndex)
-{
-    // You can set data on ALL instruments or just one; here’s just the active one
-    instrumentData[instrumentType].hasNote = hasNote;
-    instrumentData[instrumentType].volume = volume;
-    instrumentData[instrumentType].pitchIndex = pitchIndex;
-
-    // Optionally update color if you want
-    UpdateColor();
-    UpdateChildVisuals();
-}
-    // Toggle note on/off
+    // --- Note / Instrument Logic ---
     public void ToggleNote()
     {
-        // Flip hasNote for the CURRENT instrument
         bool oldHasNote = instrumentData[activeInstrument].hasNote;
         instrumentData[activeInstrument].hasNote = !oldHasNote;
-        
+
+        ringGridManager.CheckNextRow(this.gridColumn);
+
         if (instrumentData[activeInstrument].hasNote)
         {
-            // If we just turned on the note, set default volume
+            // Set default volume
             instrumentData[activeInstrument].volume = 0.5f;
-
-            // Tell the NotePlayer to play (or schedule) the note
-            // NOTE: That method might still want the pitch index 
-            // or volume from the dictionary
-            notePlayer.PlaySingleNote(this);
+            // Optionally trigger NotePlayer
+            notePlayer?.PlaySingleNote(this);
         }
         else
         {
-            // If no note, set volume to 0
+            // Turn off volume if note is removed
             instrumentData[activeInstrument].volume = 0f;
         }
+
         UpdateColor();
         UpdateChildVisuals();
     }
 
-    // Update color reflecting note volume
-     private void UpdateColor()
-    {
-        if (HasNote())
-        {
-            // Example color logic depending on which instrument
-            // is currently selected for this cell
-            switch (activeInstrument)
-            {
-                case InstrumentType.Piano:
-                    // Simple color interpolation from dark green -> bright green
-                    float pianoV = GetVolume(); 
-                    meshRenderer.material.color = new Color(
-                        0f,
-                        0.3f,
-                        0f,
-                        (0.7f * pianoV)
-                    );
-                    break;
-
-                case InstrumentType.Lead:
-                    // Simple color interpolation from dark red -> bright red
-                    float leadV = GetVolume();
-                    meshRenderer.material.color = new Color(
-                        0.3f,
-                        0.3f,
-                        0f,
-                        0.3f + (0.7f * leadV)
-                    );
-                    break;
-
-                case InstrumentType.Bass:
-                    // Simple color interpolation from dark red -> bright red
-                    float bassV = GetVolume();
-                    meshRenderer.material.color = new Color(
-                        0.3f,
-                        0.7f,
-                        0.4f,
-                        0.3f + (0.7f * bassV)
-                    );
-                    break;
-
-                case InstrumentType.Drums:
-                    // Simple color interpolation from dark red -> bright red
-                    float drumsV = GetVolume();
-                    meshRenderer.material.color = new Color(
-                        0.0f,
-                        0.3f,
-                        0f,
-                        0.3f + (0.7f * drumsV)
-                    );
-                    break;
-            }
-        }
-        else
-        {
-            // If no note -> white color
-            meshRenderer.material.color = Color.white;
-        }
-    }
-
-    // Adjust volume by a certain amount
-    public void AdjustVolume(float delta)
-    {
-        if (!HasNote()) return; // Only adjust volume if there's a note
-
-        float volume = GetVolume() + delta;
-        volume = Mathf.Clamp01(volume); // Keep volume in [0, 1]
-        SetVolume(volume);
-        UpdateColor();
-        UpdateChildVisuals();
-    }
-
-    // -------------------------------------------------------------
-    // NEW METHODS: Changing Instrument and Pitch
-    // -------------------------------------------------------------
     public void SetInstrument(InstrumentType newInstrument)
     {
         activeInstrument = newInstrument;
     }
 
-
-
-
-
-    // -------------------------------------------------------------
-    //public getters
-    // Return whether the cell has a note for the given instrument
-    public bool HasNoteForInstrument(InstrumentType instrument)
+    public void InitializeInstrumentData(InstrumentType instrumentType, bool hasNote, float volume, int pitchIndex)
     {
-        return instrumentData[instrument].hasNote;
+        instrumentData[instrumentType].hasNote = hasNote;
+        instrumentData[instrumentType].volume = volume;
+        instrumentData[instrumentType].pitchIndex = pitchIndex;
+
+        // Optionally update visuals
+        UpdateColor();
+        UpdateChildVisuals();
     }
 
-    // Return the volume for the given instrument
-    public float GetVolumeForInstrument(InstrumentType instrument)
+    public void AdjustVolume(float delta)
     {
-        return instrumentData[instrument].volume;
+        if (!HasNote()) return; // no note to adjust
+
+        float newVolume = GetVolume() + delta;
+        instrumentData[activeInstrument].volume = Mathf.Clamp01(newVolume);
+        UpdateColor();
+        UpdateChildVisuals();
     }
 
-    // Return the pitch index for the given instrument
-    public int GetPitchIndexForInstrument(InstrumentType instrument)
+    // --- Note Data Helpers ---
+    private bool HasNote() => instrumentData[activeInstrument].hasNote;
+    private float GetVolume() => instrumentData[activeInstrument].volume;
+    private void SetVolume(float newVolume) => instrumentData[activeInstrument].volume = Mathf.Clamp01(newVolume);
+    private int GetPitchIndex() => instrumentData[activeInstrument].pitchIndex;
+
+    public void SetPitchIndex(int newPitchIndex)
     {
-        return instrumentData[instrument].pitchIndex;
+        instrumentData[activeInstrument].pitchIndex = newPitchIndex;
     }
 
+    public void SetPitchIndices(int newPitchIndex)
+    {
+        // Set for all instruments
+        foreach (InstrumentType instType in Enum.GetValues(typeof(InstrumentType)))
+        {
+            if (instrumentData.ContainsKey(instType))
+            {
+                instrumentData[instType].pitchIndex = newPitchIndex;
+            }
+        }
+    }
+
+    // --- Public Getters for other scripts ---
+    public bool HasNoteForInstrument(InstrumentType instrument) => instrumentData[instrument].hasNote;
+    public float GetVolumeForInstrument(InstrumentType instrument) => instrumentData[instrument].volume;
+    public int GetPitchIndexForInstrument(InstrumentType instrument) => instrumentData[instrument].pitchIndex;
     public InstrumentType GetActiveInstrument() => activeInstrument;
 
+    // --- Visual Updates ---
+    private void UpdateColor()
+    {
+        // Change the primary MeshRenderer color based on whether there's a note
+        if (HasNote())
+        {
+            meshRenderer.material.color = new Color(1f, 0.843f, 0f, 1f); // gold
+        }
+        else
+        {
+            meshRenderer.material.color = new Color(1f, 1f, 1f, 0.1f);   // faint white
+        }
+    }
 
     private void UpdateChildVisuals()
     {
-        // For PIANO child
+        // Piano
+        bool pianoHasNote = instrumentData[InstrumentType.Piano].hasNote;
         if (pianoRenderer != null)
         {
-            // If the dictionary says there's a note for Piano
-            bool pianoHasNote = instrumentData[InstrumentType.Piano].hasNote;
-
-            // Example: Multiply original color by 2.0f to brighten it
-            if (pianoHasNote)
-                pianoRenderer.material.color = pianoOriginalColor * 3.0f;
-            else
-                pianoRenderer.material.color = pianoOriginalColor;
+                pianoRenderer.enabled = pianoHasNote;
         }
 
+        // Lead
+        bool leadHasNote = instrumentData[InstrumentType.Lead].hasNote;
         if (leadRenderer != null)
         {
-            bool leadHasNote = instrumentData[InstrumentType.Lead].hasNote;
-
-            if (leadHasNote)
-                leadRenderer.material.color = leadOriginalColor * 3.0f;
-            else
-                leadRenderer.material.color = leadOriginalColor;
+            leadRenderer.enabled = leadHasNote;
         }
 
+        // Bass
+        bool bassHasNote = instrumentData[InstrumentType.Bass].hasNote;
         if (bassRenderer != null)
         {
-            bool bassHasNote = instrumentData[InstrumentType.Bass].hasNote;
-
-            if (bassHasNote)
-                bassRenderer.material.color = bassOriginalColor * 3.0f;
-            else
-                bassRenderer.material.color = bassOriginalColor;
+            bassRenderer.enabled = bassHasNote;
         }
 
+        // Drums
+        bool drumsHasNote = instrumentData[InstrumentType.Drums].hasNote;
         if (drumsRenderer != null)
         {
-            bool drumsHasNote = instrumentData[InstrumentType.Drums].hasNote;
-
-            if (drumsHasNote)
-                drumsRenderer.material.color = drumsOriginalColor * 3.0f;
-            else
-                drumsRenderer.material.color = drumsOriginalColor;
+            drumsRenderer.enabled = drumsHasNote;
         }
-
-
     }
 
 }
+
+
 
 
 

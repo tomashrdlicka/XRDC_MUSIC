@@ -15,8 +15,15 @@ public class RingGridManager : MonoBehaviour
     // from the UI or keyboard
     [SerializeField] private InstrumentType globalInstrument;
 
+    private bool[] columnsEnabled; // Track whether each row is enabled
+
     void Start()
     {
+
+        columnsEnabled = new bool[columns];
+        // 2. By default, only row 0 is enabled
+        columnsEnabled[0] = true;
+
         // Initialize the 2D array to match the rows and columns
         cells = new NoteCell[rows, columns];
 
@@ -43,11 +50,33 @@ public class RingGridManager : MonoBehaviour
                 cellScript.notePlayer = notePlayer;
                 cellScript.SetPitchIndices(r);
 
+                cellScript.DisableRenderers();
+                
                 cells[r, c] = cellScript;
+
+                if (c == 0)
+                {
+                    cellScript.EnableCell();
+                }
             }
         }
     }
 
+
+    public void CheckNextRow(int currentColumn)
+    {
+    // Use '==' to compare instead of '='
+        if (columnsEnabled[currentColumn + 1] == false)
+        {
+            for (int r = 0; r < rows; r++)
+            {
+                cells[r, currentColumn + 1].EnableCell();
+            }
+
+            // Mark the column as enabled
+            columnsEnabled[currentColumn + 1] = true;
+        }
+    }
     // If user triggers "next instrument" globally, we call:
     public void NextInstrument()
     {

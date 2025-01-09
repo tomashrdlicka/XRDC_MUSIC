@@ -13,6 +13,8 @@ public class MouseInputHandler : MonoBehaviour
     private InputActions inputActions;
     private bool isRightMouseHeld = false;
 
+    [SerializeField] private RingGridManager ringGridManager;
+
     void Awake()
     {
         mainCamera = Camera.main;  // or assign in Inspector
@@ -86,20 +88,11 @@ public class MouseInputHandler : MonoBehaviour
                 Debug.Log($"Hit a NoteCell on object '{hit.collider.gameObject.name}'. Toggling note...");
                 noteCell.ToggleNote();
             }
-            else
-            {
-                Debug.Log("Hit an object that does not have a NoteCell component.");
-            }
+            
         }
-        else
-        {
-            Debug.Log("Raycast did not hit anything within 100 units.");
-        }
+        
     }
-    else
-    {
-        Debug.Log("OnLeftMouseClick called, but the action was not performed.");
-    }
+    
 }
 
     public void OnRightMouseDown(InputAction.CallbackContext context)
