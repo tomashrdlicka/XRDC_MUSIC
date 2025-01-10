@@ -55,8 +55,16 @@ public class NotePlayer : MonoBehaviour
     void OnStop(InputAction.CallbackContext context)
     {
         // Trigger PlayComposition when the input is performed
-        stop = true;
+        StopSequence();
     }
+
+    void StopSequence()
+    {
+        // Trigger PlayComposition when the input is performed
+        stop=true;
+    }
+
+
 
     public void PlayComposition()
     {
