@@ -62,6 +62,65 @@ public class RingGridManager : MonoBehaviour
         }
     }
 
+    private int currentLitColumn = -1; // Track the currently lit column
+
+    public void LightUpColumn(int columnIndex)
+{
+    // Validate the column index
+    if (columnIndex < 0 || columnIndex >= columns)
+    {
+        Debug.LogError($"Invalid column index: {columnIndex}. It must be between 0 and {columns - 1}.");
+        return;
+    }
+
+    // Reset the previous column's color
+    if (currentLitColumn != -1)
+    {
+        for (int r = 0; r < rows; r++)
+        {
+            NoteCell previousCell = cells[r, currentLitColumn];
+            if (previousCell != null)
+            {
+                previousCell.SequenceColor(false); // Reset to original color
+            }
+        }
+    }
+
+    // Light up the new column
+    for (int r = 0; r < rows; r++)
+    {
+        NoteCell newCell = cells[r, columnIndex];
+        if (newCell != null)
+        {
+            newCell.SequenceColor(true); // Light up with desired color
+        }
+    }
+
+    // Update the currently lit column
+    currentLitColumn = columnIndex;
+
+    // Do not reset all columns here, as this disrupts smooth infinite looping
+}
+
+
+    public void ResetAllColumns()
+    {
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < columns; c++)
+            {
+                NoteCell cell = cells[r, c];
+                if (cell != null)
+                {
+                    cell.SequenceColor(false); // Reset to original color
+                }
+            }
+        }
+        currentLitColumn = -1; // Reset the lit column tracker
+    }
+
+
+
 
     public void CheckNextRow(int currentColumn)
     {

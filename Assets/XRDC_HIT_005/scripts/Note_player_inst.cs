@@ -14,6 +14,9 @@ public class NotePlayer : MonoBehaviour
     public AudioClip[] bassClips;
     public AudioClip[] drumsClips;
 
+    private bool infinite;
+    private bool stop;
+
 
     // TODO: Add more arrays if you have more instruments
 
@@ -23,6 +26,8 @@ public class NotePlayer : MonoBehaviour
     {
         // Initialize the InputActions
         inputActions = new InputActions();
+        infinite = true;
+        stop = false;
     }
 
     void OnEnable()
@@ -30,12 +35,14 @@ public class NotePlayer : MonoBehaviour
         // Enable InputActions and subscribe to the PlayComposition action
         inputActions.Enable();
         inputActions.Gameplay.PlayComposition.performed += OnPlayComposition;
+        inputActions.Gameplay.OnStop.performed += OnStop; 
     }
 
     void OnDisable()
     {
         // Unsubscribe and disable InputActions
         inputActions.Gameplay.PlayComposition.performed -= OnPlayComposition;
+        inputActions.Gameplay.OnStop.performed -= OnStop;
         inputActions.Disable();
     }
 
@@ -43,6 +50,12 @@ public class NotePlayer : MonoBehaviour
     {
         // Trigger PlayComposition when the input is performed
         PlayComposition();
+    }
+
+    void OnStop(InputAction.CallbackContext context)
+    {
+        // Trigger PlayComposition when the input is performed
+        stop = true;
     }
 
     public void PlayComposition()
@@ -55,42 +68,57 @@ public class NotePlayer : MonoBehaviour
         int rows = gridManager.rows;
         int columns = gridManager.columns;
 
-        for (int c = 0; c < columns; c++)
+        stop = false;
+        // Outer loop for infinite play
+        while (infinite)
         {
-            for (int r = 0; r < rows; r++)
+            for (int c = 0; c < columns; c++)
             {
-                NoteCell cell = gridManager.cells[r, c];
-
-                // Check every instrument in the enum
-                foreach (InstrumentType instrument in System.Enum.GetValues(typeof(InstrumentType)))
+                // Check if the stop condition is met
+                if (stop)
                 {
-                    if (cell.HasNoteForInstrument(instrument))
+                    gridManager.ResetAllColumns(); 
+                    yield break; // Exit the coroutine
+                }
+
+                gridManager.LightUpColumn(c);
+
+                for (int r = 0; r < rows; r++)
+                {
+                    NoteCell cell = gridManager.cells[r, c];
+
+                    // Check every instrument in the enum
+                    foreach (InstrumentType instrument in System.Enum.GetValues(typeof(InstrumentType)))
                     {
-                        int pitchIndex = cell.GetPitchIndexForInstrument(instrument);
-                        float volume = cell.GetVolumeForInstrument(instrument);
-
-                        // Get the correct clip
-                        AudioClip chosenClip = GetClipByInstrument(instrument, pitchIndex);
-
-                        if (chosenClip != null)
+                        if (cell.HasNoteForInstrument(instrument))
                         {
-                            Debug.Log($" Row: {r}, Column: {c}  Playing Note - Instrument: {instrument}, PitchIndex: {pitchIndex}, Volume: {volume:F2}");
-                            AudioSource newSource = Instantiate(audioSourcePrefab, transform);
-                            newSource.clip = chosenClip;
-                            newSource.volume = volume;
-                            newSource.Play();
+                            int pitchIndex = cell.GetPitchIndexForInstrument(instrument);
+                            float volume = cell.GetVolumeForInstrument(instrument);
 
-                            Destroy(newSource.gameObject, noteDuration + 0.1f);
-                        }
-                        else
-                        {
-                            Debug.LogWarning($"No clip set for {instrument} pitchIndex={pitchIndex}");
+                            // Get the correct clip
+                            AudioClip chosenClip = GetClipByInstrument(instrument, pitchIndex);
+
+                            if (chosenClip != null)
+                            {
+                                Debug.Log($" Row: {r}, Column: {c}  Playing Note - Instrument: {instrument}, PitchIndex: {pitchIndex}, Volume: {volume:F2}");
+                                AudioSource newSource = Instantiate(audioSourcePrefab, transform);
+                                newSource.clip = chosenClip;
+                                newSource.volume = volume;
+                                newSource.Play();
+
+                                Destroy(newSource.gameObject, noteDuration + 0.1f);
+                            }
+                            else
+                            {
+                                Debug.LogWarning($"No clip set for {instrument} pitchIndex={pitchIndex}");
+                            }
                         }
                     }
                 }
+                yield return new WaitForSeconds(noteDuration);
             }
-            yield return new WaitForSeconds(noteDuration);
         }
+        gridManager.ResetAllColumns(); // Ensure cleanup if the loop exits normally
     }
 
     public void PlaySingleNote(NoteCell cell)

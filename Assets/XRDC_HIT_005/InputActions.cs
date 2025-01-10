@@ -80,6 +80,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OnStop"",
+                    ""type"": ""Button"",
+                    ""id"": ""d3db95b1-3240-45ee-b49b-5b722db848e3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -148,6 +157,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""RightMouseUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9197779d-367a-442c-b4cc-178a1b29cd0d"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnStop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -162,6 +182,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_LeftClick = m_Gameplay.FindAction("LeftClick", throwIfNotFound: true);
         m_Gameplay_RightMouseDown = m_Gameplay.FindAction("RightMouseDown", throwIfNotFound: true);
         m_Gameplay_RightMouseUp = m_Gameplay.FindAction("RightMouseUp", throwIfNotFound: true);
+        m_Gameplay_OnStop = m_Gameplay.FindAction("OnStop", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,6 +250,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_LeftClick;
     private readonly InputAction m_Gameplay_RightMouseDown;
     private readonly InputAction m_Gameplay_RightMouseUp;
+    private readonly InputAction m_Gameplay_OnStop;
     public struct GameplayActions
     {
         private @InputActions m_Wrapper;
@@ -239,6 +261,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @LeftClick => m_Wrapper.m_Gameplay_LeftClick;
         public InputAction @RightMouseDown => m_Wrapper.m_Gameplay_RightMouseDown;
         public InputAction @RightMouseUp => m_Wrapper.m_Gameplay_RightMouseUp;
+        public InputAction @OnStop => m_Wrapper.m_Gameplay_OnStop;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -266,6 +289,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RightMouseUp.started += instance.OnRightMouseUp;
             @RightMouseUp.performed += instance.OnRightMouseUp;
             @RightMouseUp.canceled += instance.OnRightMouseUp;
+            @OnStop.started += instance.OnOnStop;
+            @OnStop.performed += instance.OnOnStop;
+            @OnStop.canceled += instance.OnOnStop;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -288,6 +314,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RightMouseUp.started -= instance.OnRightMouseUp;
             @RightMouseUp.performed -= instance.OnRightMouseUp;
             @RightMouseUp.canceled -= instance.OnRightMouseUp;
+            @OnStop.started -= instance.OnOnStop;
+            @OnStop.performed -= instance.OnOnStop;
+            @OnStop.canceled -= instance.OnOnStop;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -313,5 +342,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnLeftClick(InputAction.CallbackContext context);
         void OnRightMouseDown(InputAction.CallbackContext context);
         void OnRightMouseUp(InputAction.CallbackContext context);
+        void OnOnStop(InputAction.CallbackContext context);
     }
 }

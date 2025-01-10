@@ -202,6 +202,19 @@ public class NoteCell : MonoBehaviour
         }
     }
 
+    public void SequenceColor( bool switchColor)
+    {
+        // Change the primary MeshRenderer color based on whether there's a note
+        if (switchColor)
+        {
+            meshRenderer.material.color = new Color(1f, 0.843f, 0f, 1f); // gold
+        }
+        else
+        {
+            meshRenderer.material.color = new Color(1f, 1f, 1f, 0.1f);   // faint white
+        }
+    }
+
     private void UpdateChildVisuals()
     {
         // Piano
