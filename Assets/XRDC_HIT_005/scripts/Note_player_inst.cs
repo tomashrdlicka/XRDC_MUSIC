@@ -16,6 +16,7 @@ public class NotePlayer : MonoBehaviour
 
     private bool infinite;
     private bool stop;
+    private bool playing;
 
 
     // TODO: Add more arrays if you have more instruments
@@ -61,7 +62,8 @@ public class NotePlayer : MonoBehaviour
     void StopSequence()
     {
         // Trigger PlayComposition when the input is performed
-        stop=true;
+        stop = true;
+        playing = false;
     }
 
 
@@ -73,9 +75,13 @@ public class NotePlayer : MonoBehaviour
 
     private IEnumerator PlaySequence()
     {
+        if (playing == true)
+        {
+            yield break;
+        }
         int rows = gridManager.rows;
         int columns = gridManager.columns;
-
+        playing = true;
         stop = false;
         // Outer loop for infinite play
         while (infinite)
@@ -89,7 +95,7 @@ public class NotePlayer : MonoBehaviour
                     yield break; // Exit the coroutine
                 }
 
-                gridManager.LightUpColumn(c);
+                gridManager.MoveColumn(c);
 
                 for (int r = 0; r < rows; r++)
                 {

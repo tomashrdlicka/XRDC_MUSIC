@@ -64,7 +64,7 @@ public class RingGridManager : MonoBehaviour
 
     private int currentLitColumn = -1; // Track the currently lit column
 
-    public void LightUpColumn(int columnIndex)
+    public void MoveColumn(int columnIndex)
 {
     // Validate the column index
     if (columnIndex < 0 || columnIndex >= columns)
@@ -81,7 +81,7 @@ public class RingGridManager : MonoBehaviour
             NoteCell previousCell = cells[r, currentLitColumn];
             if (previousCell != null)
             {
-                previousCell.SequenceColor(false); // Reset to original color
+                previousCell.SequenceMove(false); // Reset to original color
             }
         }
     }
@@ -92,7 +92,7 @@ public class RingGridManager : MonoBehaviour
         NoteCell newCell = cells[r, columnIndex];
         if (newCell != null)
         {
-            newCell.SequenceColor(true); // Light up with desired color
+            newCell.SequenceMove(true); // Light up with desired color
         }
     }
 
@@ -112,7 +112,7 @@ public class RingGridManager : MonoBehaviour
                 NoteCell cell = cells[r, c];
                 if (cell != null)
                 {
-                    cell.SequenceColor(false); // Reset to original color
+                    cell.ResetToOriginalPosition();
                 }
             }
         }

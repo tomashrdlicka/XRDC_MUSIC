@@ -1,6 +1,8 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
+
 
 [RequireComponent(typeof(MeshRenderer), typeof(BoxCollider))]
 public class NoteCell : MonoBehaviour
@@ -28,6 +30,8 @@ public class NoteCell : MonoBehaviour
     private Renderer leadRenderer;
     private Renderer bassRenderer;
     private Renderer drumsRenderer;
+
+    private Vector3 originalPosition;
 
    
 
@@ -64,6 +68,7 @@ public class NoteCell : MonoBehaviour
     {
         // Set default instrument
         activeInstrument = InstrumentType.Piano;
+        originalPosition = transform.position;
 
         // Initial visual updates
         
@@ -132,7 +137,7 @@ public class NoteCell : MonoBehaviour
             instrumentData[activeInstrument].volume = 0f;
         }
 
-        UpdateColor();
+        UpdateCellOn();
         UpdateChildVisuals();
     }
 
@@ -148,7 +153,6 @@ public class NoteCell : MonoBehaviour
         instrumentData[instrumentType].pitchIndex = pitchIndex;
 
         // Optionally update visuals
-        UpdateColor();
         UpdateChildVisuals();
     }
 
@@ -158,7 +162,6 @@ public class NoteCell : MonoBehaviour
 
         float newVolume = GetVolume() + delta;
         instrumentData[activeInstrument].volume = Mathf.Clamp01(newVolume);
-        UpdateColor();
         UpdateChildVisuals();
     }
 
@@ -192,20 +195,65 @@ public class NoteCell : MonoBehaviour
     public InstrumentType GetActiveInstrument() => activeInstrument;
 
     // --- Visual Updates ---
-    private void UpdateColor()
+    private Coroutine scaleCoroutine; // To track the running coroutine
+
+    private void UpdateCellOn()
     {
-        // Change the primary MeshRenderer color based on whether there's a note
+        // Check if the cell has a note
         if (HasNote())
         {
-            meshRenderer.material.color = new Color(1f, 0.843f, 0f, 1f); // gold
+            // Start expanding the prefab
+            if (scaleCoroutine != null)
+            {
+                StopCoroutine(scaleCoroutine); // Stop any running coroutine to avoid conflicts
+            }
+            scaleCoroutine = StartCoroutine(ScalePrefab(1.10f, 0.15f)); // Expand to 105% over 0.5 seconds
         }
         else
         {
-            meshRenderer.material.color = new Color(1f, 1f, 1f, 0.1f);   // faint white
+            // Reset to original size if no note is present
+            if (scaleCoroutine != null)
+            {
+                StopCoroutine(scaleCoroutine);
+            }
+            transform.localScale = Vector3.one; // Reset to original size
         }
     }
 
-    public void SequenceColor( bool switchColor)
+    private IEnumerator ScalePrefab(float targetScaleMultiplier, float duration)
+    {
+        Vector3 originalScale = transform.localScale;
+        Vector3 targetScale = originalScale * targetScaleMultiplier;
+
+        float elapsedTime = 0f;
+
+        // Smoothly scale up
+        while (elapsedTime < duration)
+        {
+            transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null; // Wait for the next frame
+        }
+
+        transform.localScale = targetScale;
+
+        // Wait for 0.5 seconds
+        yield return new WaitForSeconds(0.5f);
+
+        // Smoothly scale back down
+        elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            transform.localScale = Vector3.Lerp(targetScale, originalScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null; // Wait for the next frame
+        }
+
+        transform.localScale = originalScale;
+    }
+
+
+    public void SequenceMove( bool switchColor)
     {
         // Change the primary MeshRenderer color based on whether there's a note
         float offset = 0.2f; 
@@ -223,6 +271,12 @@ public class NoteCell : MonoBehaviour
             transform.position -= directionFromCenter * offset;
         }
     }
+
+    public void ResetToOriginalPosition()
+{
+    meshRenderer.material.color = new Color(1f, 1f, 1f, 0.1f);
+    transform.position = originalPosition;
+}
 
     private void UpdateChildVisuals()
     {
