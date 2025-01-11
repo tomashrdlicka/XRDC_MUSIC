@@ -208,13 +208,19 @@ public class NoteCell : MonoBehaviour
     public void SequenceColor( bool switchColor)
     {
         // Change the primary MeshRenderer color based on whether there's a note
+        float offset = 0.2f; 
+        Vector3 directionFromCenter = transform.position - transform.parent.position;
+        directionFromCenter.Normalize();
+
         if (switchColor)
         {
             meshRenderer.material.color = new Color(1f, 0.843f, 0f, 1f); // gold
+            transform.position += directionFromCenter * offset;
         }
         else
         {
             meshRenderer.material.color = new Color(1f, 1f, 1f, 0.1f);   // faint white
+            transform.position -= directionFromCenter * offset;
         }
     }
 
