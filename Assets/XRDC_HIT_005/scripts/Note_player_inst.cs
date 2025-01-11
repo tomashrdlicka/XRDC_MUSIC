@@ -59,7 +59,7 @@ public class NotePlayer : MonoBehaviour
         StopSequence();
     }
 
-    void StopSequence()
+    public void StopSequence()
     {
         // Trigger PlayComposition when the input is performed
         stop = true;
