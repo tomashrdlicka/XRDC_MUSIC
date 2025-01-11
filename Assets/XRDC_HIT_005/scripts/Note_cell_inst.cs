@@ -29,6 +29,8 @@ public class NoteCell : MonoBehaviour
     private Renderer bassRenderer;
     private Renderer drumsRenderer;
 
+   
+
     // --- Unity Lifecycle ---
     private void Awake()
     {
@@ -64,6 +66,7 @@ public class NoteCell : MonoBehaviour
         activeInstrument = InstrumentType.Piano;
 
         // Initial visual updates
+        
     }
 
     // --- Child Renderer Helper ---
@@ -222,6 +225,7 @@ public class NoteCell : MonoBehaviour
         if (pianoRenderer != null)
         {
                 pianoRenderer.enabled = pianoHasNote;
+               
         }
 
         // Lead
