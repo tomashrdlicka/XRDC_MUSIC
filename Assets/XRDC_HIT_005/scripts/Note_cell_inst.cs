@@ -114,7 +114,7 @@ public class NoteCell : MonoBehaviour
         bool oldHasNote = instrumentData[activeInstrument].hasNote;
         instrumentData[activeInstrument].hasNote = !oldHasNote;
 
-        ringGridManager.CheckNextRow(this.gridColumn);
+        ringGridManager.CheckNextColumn(this.gridColumn);
 
         if (instrumentData[activeInstrument].hasNote)
         {

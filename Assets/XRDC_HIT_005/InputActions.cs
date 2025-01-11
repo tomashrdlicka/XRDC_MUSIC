@@ -89,6 +89,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateCamera"",
+                    ""type"": ""Value"",
+                    ""id"": ""dc5ebda3-bc4c-4795-8dc5-bf93db336cc2"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -168,6 +177,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""OnStop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cffeb4ee-b70b-4452-a5be-82825bbdb1dd"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=-1)"",
+                    ""groups"": """",
+                    ""action"": ""RotateCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e00ef5ed-1f1c-4aec-b6aa-cc4e4eb72fb2"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -183,6 +214,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_RightMouseDown = m_Gameplay.FindAction("RightMouseDown", throwIfNotFound: true);
         m_Gameplay_RightMouseUp = m_Gameplay.FindAction("RightMouseUp", throwIfNotFound: true);
         m_Gameplay_OnStop = m_Gameplay.FindAction("OnStop", throwIfNotFound: true);
+        m_Gameplay_RotateCamera = m_Gameplay.FindAction("RotateCamera", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -251,6 +283,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_RightMouseDown;
     private readonly InputAction m_Gameplay_RightMouseUp;
     private readonly InputAction m_Gameplay_OnStop;
+    private readonly InputAction m_Gameplay_RotateCamera;
     public struct GameplayActions
     {
         private @InputActions m_Wrapper;
@@ -262,6 +295,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @RightMouseDown => m_Wrapper.m_Gameplay_RightMouseDown;
         public InputAction @RightMouseUp => m_Wrapper.m_Gameplay_RightMouseUp;
         public InputAction @OnStop => m_Wrapper.m_Gameplay_OnStop;
+        public InputAction @RotateCamera => m_Wrapper.m_Gameplay_RotateCamera;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -292,6 +326,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @OnStop.started += instance.OnOnStop;
             @OnStop.performed += instance.OnOnStop;
             @OnStop.canceled += instance.OnOnStop;
+            @RotateCamera.started += instance.OnRotateCamera;
+            @RotateCamera.performed += instance.OnRotateCamera;
+            @RotateCamera.canceled += instance.OnRotateCamera;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -317,6 +354,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @OnStop.started -= instance.OnOnStop;
             @OnStop.performed -= instance.OnOnStop;
             @OnStop.canceled -= instance.OnOnStop;
+            @RotateCamera.started -= instance.OnRotateCamera;
+            @RotateCamera.performed -= instance.OnRotateCamera;
+            @RotateCamera.canceled -= instance.OnRotateCamera;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -343,5 +383,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnRightMouseDown(InputAction.CallbackContext context);
         void OnRightMouseUp(InputAction.CallbackContext context);
         void OnOnStop(InputAction.CallbackContext context);
+        void OnRotateCamera(InputAction.CallbackContext context);
     }
 }
