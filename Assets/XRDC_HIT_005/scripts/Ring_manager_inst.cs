@@ -121,19 +121,26 @@ public class RingGridManager : MonoBehaviour
 
 
 
-
-    public void CheckNextRow(int currentColumn)
+    public void CheckNextColumn(int currentColumn)
     {
-    // Use '==' to compare instead of '='
-        if (columnsEnabled[currentColumn + 1] == false)
+        // Check if the currentColumn is the last column
+        if (currentColumn + 1 < columnsEnabled.Length)
         {
-            for (int r = 0; r < rows; r++)
+            // Proceed only if the next column exists
+            if (columnsEnabled[currentColumn + 1] == false)
             {
-                cells[r, currentColumn + 1].EnableCell();
-            }
+                for (int r = 0; r < rows; r++)
+                {
+                    cells[r, currentColumn + 1].EnableCell();
+                }
 
-            // Mark the column as enabled
-            columnsEnabled[currentColumn + 1] = true;
+                // Mark the column as enabled
+                columnsEnabled[currentColumn + 1] = true;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No next column exists. Already at the last column.");
         }
     }
     // If user triggers "next instrument" globally, we call:
