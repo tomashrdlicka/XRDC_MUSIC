@@ -137,7 +137,7 @@ public class NoteCell : MonoBehaviour
             instrumentData[activeInstrument].volume = 0f;
         }
 
-        UpdateCellOn();
+        //UpdateCellOn();
         UpdateChildVisuals();
     }
 
