@@ -6,6 +6,7 @@ TagManager:
   tags:
   - MenuInteractionOut
   - Hand
+  - Inst1
   layers:
   - Default
   - TransparentFX
