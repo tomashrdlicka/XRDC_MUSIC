@@ -963,6 +963,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4303302720905332359}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3268098087746095278 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7574215770088567255, guid: 55c0f90fec4f74e269d0085cd64e6008,
+    type: 3}
+  m_PrefabInstance: {fileID: 4303302720905332359}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3997242464011680726 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 55c0f90fec4f74e269d0085cd64e6008,
@@ -1087,9 +1093,33 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 3268098087746095278}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   onTouchExit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3268098087746095278}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!135 &4379357155641857911
 SphereCollider:
   m_ObjectHideFlags: 0
