@@ -13,6 +13,7 @@ public class OnboardingManager : MonoBehaviour
     public bool isPauseStepDone  = false;  
 
     public InstrumentType requiredInstrument = InstrumentType.Piano;
+    GameObject instrumentMenuObj;
 
     // Piano melody steps: E E F G | G F E D | C C D E | D C C C
     [System.Serializable]
@@ -89,11 +90,12 @@ public class OnboardingManager : MonoBehaviour
 
     private void Start()
     {   
+        instrumentMenuObj = GameObject.Find("InstrumentMenu");
+        instrumentMenuObj.SetActive(false);
+
         onboardingMode = true;
-        if (onboardingMode)
-        {
-            StartCoroutine(WaitForGridInitialization());
-        }
+        StartCoroutine(WaitForGridInitialization());
+
     }
 
     private IEnumerator WaitForGridInitialization()
@@ -202,6 +204,7 @@ public class OnboardingManager : MonoBehaviour
         Debug.Log("Play/Pause steps complete for this melody.");
 
         ringGridManager.SetSwitchInstruments(true);
+        instrumentMenuObj.SetActive(true);
 
         if (doingFirstMelody)
         {
@@ -213,7 +216,7 @@ public class OnboardingManager : MonoBehaviour
         {
             // We finished the second melody (Bass). Now we can finalize.
             Debug.Log("Done with second melody. Resetting grid & ending onboarding...");
-            ringGridManager.ResetAllColumns();  // Or ringGridManager.ResetAll() if you have that
+            ringGridManager.ResetAll();  // Or ringGridManager.ResetAll() if you have that
             EndOnboarding();
         }
     }

@@ -179,6 +179,45 @@ public class RingGridManager : MonoBehaviour
         canSwitchInstruments = can;
     }
 
+    public void ResetAll()
+{
+    Debug.Log("Resetting the entire grid to its original state...");
+
+    // 1. Reset all cells to their original state
+    for (int r = 0; r < rows; r++)
+    {
+        for (int c = 0; c < columns; c++)
+        {
+            NoteCell cell = cells[r, c];
+            if (cell != null)
+            {
+                cell.ResetToOriginalPosition(); // Reset position and visual state
+                //cell.DisableRenderers();        // Disable rendering
+                cell.InitializeInstrumentData(InstrumentType.Piano, false, 0f, 0); // Clear note data
+                cell.InitializeInstrumentData(InstrumentType.Bass, false, 0f, 0);
+            }
+        }
+    }
+
+    // 2. Reset column tracking
+    currentLitColumn = -1;                 // No column is lit
+    columnsEnabled = new bool[columns];   // Reinitialize column tracking
+    columnsEnabled[0] = true;             // Enable only the first column
+
+    // 3. Reset the global instrument to its default
+    globalInstrument = InstrumentType.Piano; // Change this to your desired default instrument
+    Debug.Log($"Global instrument reset to {globalInstrument}.");
+
+    // 4. Re-enable the first column's cells
+    for (int r = 0; r < rows; r++)
+    {
+        cells[r, 0].EnableCell();
+    }
+
+    Debug.Log("Grid reset complete.");
+}
+
+
 }
 
 
