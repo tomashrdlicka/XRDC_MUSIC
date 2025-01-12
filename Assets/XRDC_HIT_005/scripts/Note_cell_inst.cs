@@ -13,6 +13,7 @@ public class NoteCell : MonoBehaviour
     public BoxCollider boxCollider;
     public NotePlayer notePlayer;             // Reference to your NotePlayer script
     private RingGridManager ringGridManager;  // Found automatically in Awake (parent)
+    private OnboardingManager onboardingManager;
 
     // --- Grid Indices ---
     [Header("Grid Settings")]
@@ -30,7 +31,7 @@ public class NoteCell : MonoBehaviour
     private Renderer leadRenderer;
     private Renderer bassRenderer;
     private Renderer drumsRenderer;
-    private Renderer controlRenderer;
+    public Renderer controlRenderer;
 
     private MeshRenderer[] cornerRenderers;
 
@@ -44,11 +45,8 @@ public class NoteCell : MonoBehaviour
     {
         // 1. Find the RingGridManager in the parent chain
         ringGridManager = GetComponentInParent<RingGridManager>();
-        if (ringGridManager == null)
-        {
-            Debug.LogError($"RingGridManager not found for {gameObject.name}. " +
-                           "Ensure this cell is a child of the RingGridManager GameObject.");
-        }
+
+        onboardingManager = FindObjectOfType<OnboardingManager>();
 
         // 2. Initialize the instrument data dictionary
         instrumentData = new Dictionary<InstrumentType, InstrumentNoteData>();
@@ -103,7 +101,8 @@ public class NoteCell : MonoBehaviour
     public void DisableRenderers()
     {
         // Hide the parent MeshRenderer + BoxCollider
-        meshRenderer.enabled = false;
+        meshRenderer.material.color = new Color(1f, 1f, 1f, 0.05f);   // faint white
+        meshRenderer.enabled = true;
         boxCollider.enabled = false;
         SetCornerVisibility(false);
 
@@ -141,13 +140,23 @@ public class NoteCell : MonoBehaviour
     // --- Note / Instrument Logic ---
     public void ToggleNote()
     {
+        if (onboardingManager.onboardingMode && ringGridManager.GetGlobalInstrument() != onboardingManager.requiredInstrument)
+        {
+            Debug.Log("You're not on the correct instrument right now!");
+            return;
+        }
+
         bool oldHasNote = instrumentData[activeInstrument].hasNote;
         instrumentData[activeInstrument].hasNote = !oldHasNote;
 
-        ringGridManager.CheckNextColumn(this.gridColumn);
-
         if (instrumentData[activeInstrument].hasNote)
         {
+            //if in onboard mode
+            OnboardingManager onboardingManager = FindObjectOfType<OnboardingManager>();
+            if (onboardingManager != null)
+            {
+                onboardingManager.OnCellPressed(this);
+            }
             // Set default volume
             instrumentData[activeInstrument].volume = 0.5f;
             // Optionally trigger NotePlayer
@@ -159,7 +168,6 @@ public class NoteCell : MonoBehaviour
             instrumentData[activeInstrument].volume = 0f;
         }
 
-        //UpdateCellOn();
         UpdateChildVisuals();
     }
 
@@ -217,63 +225,6 @@ public class NoteCell : MonoBehaviour
     public InstrumentType GetActiveInstrument() => activeInstrument;
 
     // --- Visual Updates ---
-    private Coroutine scaleCoroutine; // To track the running coroutine
-
-    private void UpdateCellOn()
-    {
-        // Check if the cell has a note
-        if (HasNote())
-        {
-            // Start expanding the prefab
-            if (scaleCoroutine != null)
-            {
-                StopCoroutine(scaleCoroutine); // Stop any running coroutine to avoid conflicts
-            }
-            scaleCoroutine = StartCoroutine(ScalePrefab(.10f, 0.15f)); // Expand to 105% over 0.5 seconds
-        }
-        else
-        {
-            // Reset to original size if no note is present
-            if (scaleCoroutine != null)
-            {
-                StopCoroutine(scaleCoroutine);
-            }
-            transform.localScale = Vector3.one; // Reset to original size
-        }
-    }
-
-    private IEnumerator ScalePrefab(float targetScaleMultiplier, float duration)
-    {
-        Vector3 originalScale = transform.localScale;
-        Vector3 targetScale = originalScale * targetScaleMultiplier;
-
-        float elapsedTime = 0f;
-
-        // Smoothly scale up
-        while (elapsedTime < duration)
-        {
-            transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            yield return null; // Wait for the next frame
-        }
-
-        transform.localScale = targetScale;
-
-        // Wait for 0.5 seconds
-        yield return new WaitForSeconds(0.5f);
-
-        // Smoothly scale back down
-        elapsedTime = 0f;
-        while (elapsedTime < duration)
-        {
-            transform.localScale = Vector3.Lerp(targetScale, originalScale, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            yield return null; // Wait for the next frame
-        }
-
-        transform.localScale = originalScale;
-    }
-
 
     public void SequenceMove( bool switchColor)
     {
@@ -289,7 +240,7 @@ public class NoteCell : MonoBehaviour
         }
         else
         {
-            meshRenderer.material.color = new Color(1f, 1f, 1f, 0.1f);   // faint white
+            meshRenderer.material.color = new Color(1f, 1f, 1f, 0.05f);   // faint white
             transform.position -= directionFromCenter * offset;
         }
     }

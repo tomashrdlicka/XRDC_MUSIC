@@ -22,6 +22,7 @@ public class NotePlayer : MonoBehaviour
     // TODO: Add more arrays if you have more instruments
 
     private InputActions inputActions;
+    public OnboardingManager onboarding; 
 
     void Awake()
     {
@@ -60,7 +61,13 @@ public class NotePlayer : MonoBehaviour
     }
 
     public void StopSequence()
+
     {
+        if (onboarding != null && onboarding.onboardingMode && onboarding.isMelodyComplete && onboarding.isPlayStepDone && !onboarding.isPauseStepDone)
+        {
+            onboarding.isPauseStepDone = true;
+            Debug.Log("Onboarding: Marking Pause step as done!");
+        }
         // Trigger PlayComposition when the input is performed
         stop = true;
         playing = false;
@@ -70,6 +77,12 @@ public class NotePlayer : MonoBehaviour
 
     public void PlayComposition()
     {
+        
+        if (onboarding != null && onboarding.onboardingMode && onboarding.isMelodyComplete && !onboarding.isPlayStepDone)
+        {
+            onboarding.isPlayStepDone = true;
+            Debug.Log("Onboarding: Marking Play step as done!");
+        }
         StartCoroutine(PlaySequence());
     }
 
@@ -114,7 +127,7 @@ public class NotePlayer : MonoBehaviour
 
                             if (chosenClip != null)
                             {
-                                Debug.Log($" Row: {r}, Column: {c}  Playing Note - Instrument: {instrument}, PitchIndex: {pitchIndex}, Volume: {volume:F2}");
+                                //Debug.Log($" Row: {r}, Column: {c}  Playing Note - Instrument: {instrument}, PitchIndex: {pitchIndex}, Volume: {volume:F2}");
                                 AudioSource newSource = Instantiate(audioSourcePrefab, transform);
                                 newSource.clip = chosenClip;
                                 newSource.volume = volume;

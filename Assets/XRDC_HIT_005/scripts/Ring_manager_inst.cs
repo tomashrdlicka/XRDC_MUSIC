@@ -14,6 +14,7 @@ public class RingGridManager : MonoBehaviour
     // This is the "global" instrument that the user can switch
     // from the UI or keyboard
     [SerializeField] private InstrumentType globalInstrument;
+    [SerializeField] private bool canSwitchInstruments = false;
 
     private bool[] columnsEnabled; // Track whether each row is enabled
 
@@ -120,32 +121,14 @@ public class RingGridManager : MonoBehaviour
     }
 
 
-
-    public void CheckNextColumn(int currentColumn)
-    {
-        // Check if the currentColumn is the last column
-        if (currentColumn + 1 < columnsEnabled.Length)
-        {
-            // Proceed only if the next column exists
-            if (columnsEnabled[currentColumn + 1] == false)
-            {
-                for (int r = 0; r < rows; r++)
-                {
-                    cells[r, currentColumn + 1].EnableCell();
-                }
-
-                // Mark the column as enabled
-                columnsEnabled[currentColumn + 1] = true;
-            }
-        }
-        else
-        {
-            Debug.LogWarning("No next column exists. Already at the last column.");
-        }
-    }
     // If user triggers "next instrument" globally, we call:
     public void NextInstrument()
     {
+        if (!canSwitchInstruments)
+        {
+            Debug.Log("Instrument switching not allowed right now.");
+            return;
+        }
         int maxInstrumentCount = System.Enum.GetValues(typeof(InstrumentType)).Length;
         int currentIndex = (int)globalInstrument;
         currentIndex = (currentIndex + 1) % maxInstrumentCount;
@@ -165,6 +148,11 @@ public class RingGridManager : MonoBehaviour
 
     public void PreviousInstrument()
     {
+        if (!canSwitchInstruments)
+        {
+            Debug.Log("Instrument switching not allowed right now.");
+            return;
+        }
         int maxInstrumentCount = System.Enum.GetValues(typeof(InstrumentType)).Length;
         int currentIndex = (int)globalInstrument;
         currentIndex = (currentIndex - 1 + maxInstrumentCount) % maxInstrumentCount;
@@ -180,6 +168,15 @@ public class RingGridManager : MonoBehaviour
         }
 
         Debug.Log("Global instrument switched -> " + globalInstrument);
+    }
+
+    public InstrumentType GetGlobalInstrument()
+    {
+        return globalInstrument;
+    }
+    public void SetSwitchInstruments(bool can)
+    {
+        canSwitchInstruments = can;
     }
 
 }
