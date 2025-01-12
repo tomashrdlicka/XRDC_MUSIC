@@ -229,7 +229,7 @@ public class NoteCell : MonoBehaviour
             {
                 StopCoroutine(scaleCoroutine); // Stop any running coroutine to avoid conflicts
             }
-            scaleCoroutine = StartCoroutine(ScalePrefab(1.10f, 0.15f)); // Expand to 105% over 0.5 seconds
+            scaleCoroutine = StartCoroutine(ScalePrefab(.10f, 0.15f)); // Expand to 105% over 0.5 seconds
         }
         else
         {
