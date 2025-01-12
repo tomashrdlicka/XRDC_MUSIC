@@ -76,6 +76,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "RotateCameraVertical",
+                    "type": "Value",
+                    "id": "3bf63e7e-a9af-4b51-bd81-bd57d4cddb16",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -175,6 +184,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "RotateCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "17d87850-bcaa-4d50-a16d-e3081374a513",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "Scale(factor=-1)",
+                    "groups": "",
+                    "action": "RotateCameraVertical",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3a8b5bf8-2a6a-413e-a0c7-86bcfc5a6718",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateCameraVertical",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

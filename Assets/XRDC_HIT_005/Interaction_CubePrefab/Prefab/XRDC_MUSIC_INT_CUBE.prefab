@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8795753933882988351}
   - component: {fileID: 8506011829822738102}
   m_Layer: 0
-  m_Name: CnrSphere (1)
+  m_Name: Corner1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 3379915863694753101}
   - component: {fileID: 7700553305735502609}
   m_Layer: 0
-  m_Name: CnrSphere (3)
+  m_Name: Corner3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 7677407822553686186}
   - component: {fileID: 7069568456559119054}
   m_Layer: 0
-  m_Name: CnrSphere
+  m_Name: Corner0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 4990828570144584136}
   - component: {fileID: 3774880635415346269}
   m_Layer: 0
-  m_Name: CnrSphere (2)
+  m_Name: Corner2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 5862417418046658514}
   - component: {fileID: 60262667929500794}
   m_Layer: 0
-  m_Name: ControlSphere
+  m_Name: Control_Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -535,7 +535,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2183638222792966283}
   m_Layer: 0
-  m_Name: corners
+  m_Name: Corners
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

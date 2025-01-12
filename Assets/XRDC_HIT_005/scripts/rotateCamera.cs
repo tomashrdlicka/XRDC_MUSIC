@@ -7,6 +7,8 @@ public class CameraRotation : MonoBehaviour
 
     private InputActions inputActions; // Replace this with your specific input class if named differently
     private float rotationInput;
+    private float rotationInputVertical;
+
 
     private void Awake()
     {
@@ -16,6 +18,8 @@ public class CameraRotation : MonoBehaviour
         // Bind the RotateCamera action
         inputActions.Gameplay.RotateCamera.performed += OnRotateCamera;
         inputActions.Gameplay.RotateCamera.canceled += OnRotateCamera;
+        inputActions.Gameplay.RotateCameraVertical.performed += OnRotateCameraVertical;
+        inputActions.Gameplay.RotateCameraVertical.canceled += OnRotateCameraVertical;
     }
 
     private void OnEnable()
@@ -38,11 +42,22 @@ public class CameraRotation : MonoBehaviour
             float rotationAmount = rotationInput * rotationSpeed * Time.deltaTime;
             transform.Rotate(Vector3.up, rotationAmount);
         }
+        if (rotationInputVertical != 0)
+        {
+            float rotationAmount = rotationInputVertical * rotationSpeed * Time.deltaTime;
+            transform.Rotate(Vector3.right, rotationAmount); // Rotates around the global X-axis
+        }
     }
 
     private void OnRotateCamera(InputAction.CallbackContext context)
     {
         // Read the input value
         rotationInput = context.ReadValue<float>();
+    }
+
+    private void OnRotateCameraVertical(InputAction.CallbackContext context)
+    {
+        // Read the input value
+        rotationInputVertical = context.ReadValue<float>();
     }
 }

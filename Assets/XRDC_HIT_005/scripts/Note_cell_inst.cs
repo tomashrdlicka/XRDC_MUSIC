@@ -30,6 +30,10 @@ public class NoteCell : MonoBehaviour
     private Renderer leadRenderer;
     private Renderer bassRenderer;
     private Renderer drumsRenderer;
+    private Renderer controlRenderer;
+
+    private MeshRenderer[] cornerRenderers;
+
 
     private Vector3 originalPosition;
 
@@ -58,6 +62,10 @@ public class NoteCell : MonoBehaviour
         leadRenderer  = TryGetChildRenderer("Lead_Prefab");
         bassRenderer  = TryGetChildRenderer("Bass_Prefab");
         drumsRenderer = TryGetChildRenderer("Drums_Prefab");
+        controlRenderer = TryGetChildRenderer("Control_Sphere");
+
+         Transform corners = transform.Find("Corners");
+         cornerRenderers = corners.GetComponentsInChildren<MeshRenderer>();
 
         // 4. Get references to this GameObject's MeshRenderer and BoxCollider
         meshRenderer = GetComponent<MeshRenderer>();
@@ -97,6 +105,7 @@ public class NoteCell : MonoBehaviour
         // Hide the parent MeshRenderer + BoxCollider
         meshRenderer.enabled = false;
         boxCollider.enabled = false;
+        SetCornerVisibility(false);
 
         // Hide all child MeshRenderers (if any)
         MeshRenderer[] childRenderers = GetComponentsInChildren<MeshRenderer>();
@@ -106,11 +115,24 @@ public class NoteCell : MonoBehaviour
         }
     }
 
+    public void SetCornerVisibility(bool isVisible)
+    {
+        if (cornerRenderers != null)
+        {
+            foreach (MeshRenderer renderer in cornerRenderers)
+            {
+                renderer.enabled = isVisible;
+            }
+        }
+    }
+
     public void EnableCell()
     {
         // Show the parent MeshRenderer + BoxCollider
-        meshRenderer.enabled = true;
+        //meshRenderer.enabled = true;
         boxCollider.enabled = true;
+        controlRenderer.enabled = true;
+        SetCornerVisibility(true);
 
         // Show all child MeshRenderers
     }
@@ -278,37 +300,47 @@ public class NoteCell : MonoBehaviour
     transform.position = originalPosition;
 }
 
+private void UpdateRendererAndChild(Renderer parentRenderer, bool isEnabled)
+{
+    if (parentRenderer != null)
+    {
+        // Enable or disable the parent renderer
+        parentRenderer.enabled = isEnabled;
+
+        // Enable or disable the child renderer (exactly one child assumed)
+        Transform child = parentRenderer.transform.childCount > 0 ? parentRenderer.transform.GetChild(0) : null;
+        if (child != null)
+        {
+            Renderer childRenderer = child.GetComponent<Renderer>();
+            if (childRenderer != null)
+            {
+                childRenderer.enabled = isEnabled;
+            }
+        }
+    }
+}
+
     private void UpdateChildVisuals()
     {
+        // Update the parent and child renderers for each instrument
+
         // Piano
         bool pianoHasNote = instrumentData[InstrumentType.Piano].hasNote;
-        if (pianoRenderer != null)
-        {
-                pianoRenderer.enabled = pianoHasNote;
-               
-        }
+        UpdateRendererAndChild(pianoRenderer, pianoHasNote);
 
         // Lead
         bool leadHasNote = instrumentData[InstrumentType.Lead].hasNote;
-        if (leadRenderer != null)
-        {
-            leadRenderer.enabled = leadHasNote;
-        }
+        UpdateRendererAndChild(leadRenderer, leadHasNote);
 
         // Bass
         bool bassHasNote = instrumentData[InstrumentType.Bass].hasNote;
-        if (bassRenderer != null)
-        {
-            bassRenderer.enabled = bassHasNote;
-        }
+        UpdateRendererAndChild(bassRenderer, bassHasNote);
 
         // Drums
         bool drumsHasNote = instrumentData[InstrumentType.Drums].hasNote;
-        if (drumsRenderer != null)
-        {
-            drumsRenderer.enabled = drumsHasNote;
-        }
+        UpdateRendererAndChild(drumsRenderer, drumsHasNote);
     }
+
 
 }
 
