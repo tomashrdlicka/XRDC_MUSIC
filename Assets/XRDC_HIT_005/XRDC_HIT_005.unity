@@ -19191,9 +19191,9 @@ MonoBehaviour:
   _whenSelected:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1256957529}
-        m_TargetAssemblyTypeName: NotePlayer, Assembly-CSharp
-        m_MethodName: StopSequence
+      - m_Target: {fileID: 1456386054}
+        m_TargetAssemblyTypeName: RingGridManager, Assembly-CSharp
+        m_MethodName: ResetAll
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -35583,7 +35583,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1131044668}
   - {fileID: 125311453}
-  - {fileID: 1993345076}
   - {fileID: 2199347977185895535}
+  - {fileID: 1993345076}
   - {fileID: 1120495485}
   - {fileID: 6254927542028444549}
