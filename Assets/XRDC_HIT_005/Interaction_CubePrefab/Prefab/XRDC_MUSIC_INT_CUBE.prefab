@@ -1157,6 +1157,7 @@ MonoBehaviour:
   gridRow: 0
   gridColumn: 0
   activeInstrument: 0
+  controlRenderer: {fileID: 0}
 --- !u!114 &2584336766203754111
 MonoBehaviour:
   m_ObjectHideFlags: 0
