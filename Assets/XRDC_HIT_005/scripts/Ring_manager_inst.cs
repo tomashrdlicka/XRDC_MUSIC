@@ -217,6 +217,11 @@ public class RingGridManager : MonoBehaviour
     Debug.Log("Grid reset complete.");
 }
 
+private void HandResetAll()
+{
+    ResetAll();
+}
+
 
 }
 
