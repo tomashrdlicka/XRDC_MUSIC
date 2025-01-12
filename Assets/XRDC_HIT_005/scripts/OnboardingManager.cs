@@ -318,7 +318,7 @@ public class OnboardingManager : MonoBehaviour
         {
             stepInProgress = false;
             // Reset color
-            cell.meshRenderer.material.color = new Color(1f, 1f, 1f, 0.1f);
+            cell.meshRenderer.material.color = new Color(1f, 1f, 1f, 0.03f);
 
             GoToNextStep();
         }
