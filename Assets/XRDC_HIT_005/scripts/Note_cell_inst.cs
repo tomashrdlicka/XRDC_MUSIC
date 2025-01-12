@@ -101,7 +101,7 @@ public class NoteCell : MonoBehaviour
     public void DisableRenderers()
     {
         // Hide the parent MeshRenderer + BoxCollider
-        meshRenderer.material.color = new Color(1f, 1f, 1f, 0.05f);   // faint white
+        meshRenderer.material.color = new Color(1f, 1f, 1f, 0.03f);   // faint white
         meshRenderer.enabled = true;
         boxCollider.enabled = false;
         SetCornerVisibility(false);
@@ -240,7 +240,7 @@ public class NoteCell : MonoBehaviour
         }
         else
         {
-            meshRenderer.material.color = new Color(1f, 1f, 1f, 0.05f);   // faint white
+            meshRenderer.material.color = new Color(1f, 1f, 1f, 0.03f);   // faint white
             transform.position -= directionFromCenter * offset;
         }
     }

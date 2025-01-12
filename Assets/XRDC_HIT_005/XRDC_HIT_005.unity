@@ -921,7 +921,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5cf066e3475d24424bc2d955f324257f, type: 3}
   - {fileID: 8300000, guid: 6715edc1a010d45fe9c7a171d2dd33f1, type: 3}
   - {fileID: 8300000, guid: 9b508903f0e7b4d049aa1ad7550d8b53, type: 3}
-  onboarding: {fileID: 0}
+  onboarding: {fileID: 1076626362}
 --- !u!1 &1351584179
 GameObject:
   m_ObjectHideFlags: 0
