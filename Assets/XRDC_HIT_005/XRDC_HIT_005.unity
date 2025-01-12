@@ -1558,58 +1558,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volumeSensitivity: 0.005
   ringGridManager: {fileID: 0}
---- !u!1 &1937510058
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1937510060}
-  - component: {fileID: 1937510059}
-  m_Layer: 0
-  m_Name: RingFloor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1937510059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937510058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f8e4b26c89174f8687e80c505122c21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ringPrefab: {fileID: 3603826459325502645, guid: aca70cde054d54d4ba603f28cbe0ec73,
-    type: 3}
-  pulseDuration: 1.5
-  spawnInterval: 0.5
-  maxScale: 2
-  minScale: 0.2
-  startColor: {r: 1, g: 0, b: 0.9423084, a: 1}
-  endColor: {r: 0.3839836, g: 0, b: 1, a: 0}
---- !u!4 &1937510060
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937510058}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05865529, y: 0.7623249, z: 0.0055228947}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1993345070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1788,6 +1736,24 @@ Transform:
   - {fileID: 1483913082}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &2013164280 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2801570319110289020, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+    type: 3}
+  m_PrefabInstance: {fileID: 6254927542028444549}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2013164281 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7355831498908895278, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+    type: 3}
+  m_PrefabInstance: {fileID: 6254927542028444549}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013164280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e0320e9af50b415cb972c299d5ed3ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &14805911341432177
 GameObject:
   m_ObjectHideFlags: 0
@@ -20799,22 +20765,10 @@ MonoBehaviour:
   _whenSelected:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1937510059}
-        m_TargetAssemblyTypeName: PulsatingRings, Assembly-CSharp
-        m_MethodName: ClearRings
+      - m_Target: {fileID: 2013164281}
+        m_TargetAssemblyTypeName: PulsatingRingsManager, Assembly-CSharp
+        m_MethodName: StopSpawning
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1937510058}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -20827,6 +20781,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: NotePlayer, Assembly-CSharp
         m_MethodName: StopSequence
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2013164280}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -21333,6 +21299,99 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2913422346592548697}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &6254927542028444549
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1916153193087198833, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.18877606
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916153193087198833, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.22864279
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916153193087198833, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.021673858
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916153193087198833, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916153193087198833, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916153193087198833, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916153193087198833, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916153193087198833, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916153193087198833, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916153193087198833, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2801570319110289020, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: m_Name
+      value: PulseRingManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 2801570319110289020, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7355831498908895278, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: floorOffset
+      value: -3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7355831498908895278, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: ringLifetime
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7355831498908895278, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: spawnInterval
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7355831498908895278, guid: 5cd52f8397bdb4b41ad2985cfcef30ee,
+        type: 3}
+      propertyPath: cameraTransform
+      value: 
+      objectReference: {fileID: 6690811210110791700}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5cd52f8397bdb4b41ad2985cfcef30ee, type: 3}
 --- !u!1 &6257441063128867763
 GameObject:
   m_ObjectHideFlags: 0
@@ -23373,15 +23432,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6690811210110954546}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -3.2, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6690811210110855504}
   - {fileID: 635346735312841601}
   m_Father: {fileID: 1131044668}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &6690811210110791700
 Transform:
   m_ObjectHideFlags: 0
@@ -25127,7 +25186,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1937510058}
+      - m_Target: {fileID: 2013164280}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -25138,6 +25197,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2013164281}
+        m_TargetAssemblyTypeName: PulsatingRingsManager, Assembly-CSharp
+        m_MethodName: StartSpawning
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
   _whenUnselected:
     m_PersistentCalls:
@@ -35515,4 +35586,4 @@ SceneRoots:
   - {fileID: 1993345076}
   - {fileID: 2199347977185895535}
   - {fileID: 1120495485}
-  - {fileID: 1937510060}
+  - {fileID: 6254927542028444549}

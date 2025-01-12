@@ -72,17 +72,20 @@ public class PulsatingRings : MonoBehaviour
     public void ClearRings()
     {
         // Ensure all active rings are destroyed
+        Debug.Log("Clearing all rings...");
         for (int i = activeRings.Count - 1; i >= 0; i--) // Iterate backward to avoid index shifting
         {
             GameObject ring = activeRings[i];
             if (ring != null)
             {
+                Debug.Log($"Destroying ring: {ring.name}");
                 Destroy(ring);
             }
         }
 
         // Clear the list after destroying all rings
         activeRings.Clear();
+        Debug.Log("All rings cleared.");
     }
 
     public void ToggleSpawning(bool enabled)
@@ -91,7 +94,7 @@ public class PulsatingRings : MonoBehaviour
 
         if (!spawningEnabled)
         {
-            ClearRings(); // Optionally clear rings when disabling
+            ClearRings(); 
         }
     }
 }
