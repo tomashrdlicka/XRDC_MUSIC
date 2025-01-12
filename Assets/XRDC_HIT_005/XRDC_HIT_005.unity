@@ -1245,8 +1245,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rows: 7
-  columns: 12
-  radius: 0.6
+  columns: 16
+  radius: 0.7
   verticalSpacing: 0.25
   cellPrefab: {fileID: 3997242464011680726, guid: fe0d0548fdda2446585f9ea7baf0cfe6,
     type: 3}
