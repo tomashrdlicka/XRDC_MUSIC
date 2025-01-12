@@ -207,7 +207,7 @@ public class OnboardingManager : MonoBehaviour
         {
             PlayNarrativeClip(9);
         }
-        else
+        else if (randomValue == 4)
         {
             PlayNarrativeClip(10);
         }
