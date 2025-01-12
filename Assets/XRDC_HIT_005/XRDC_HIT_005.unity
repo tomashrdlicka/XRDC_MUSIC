@@ -155,6 +155,7 @@ Transform:
   - {fileID: 1898675106}
   - {fileID: 1456386053}
   - {fileID: 474715113}
+  - {fileID: 1076626361}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &202777667 stripped
@@ -571,6 +572,122 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 100
+--- !u!1 &1076626360
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1076626361}
+  - component: {fileID: 1076626362}
+  m_Layer: 0
+  m_Name: OnboardingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1076626361
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076626360}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 125311453}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1076626362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076626360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1d5c4bc97e2f4b84b8501ee01dcba08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ringGridManager: {fileID: 1456386054}
+  onboardingMode: 0
+  isMelodyComplete: 0
+  isPlayStepDone: 0
+  isPauseStepDone: 0
+  requiredInstrument: 0
+  pianoSteps:
+  - row: 2
+    column: 0
+  - row: 2
+    column: 1
+  - row: 3
+    column: 2
+  - row: 4
+    column: 3
+  - row: 4
+    column: 4
+  - row: 3
+    column: 5
+  - row: 2
+    column: 6
+  - row: 1
+    column: 7
+  - row: 0
+    column: 8
+  - row: 0
+    column: 9
+  - row: 1
+    column: 10
+  - row: 2
+    column: 11
+  - row: 1
+    column: 12
+  - row: 0
+    column: 13
+  - row: 0
+    column: 14
+  - row: 0
+    column: 15
+  bassSteps:
+  - row: 0
+    column: 0
+  - row: 0
+    column: 1
+  - row: 4
+    column: 2
+  - row: 4
+    column: 3
+  - row: 3
+    column: 4
+  - row: 3
+    column: 5
+  - row: 0
+    column: 6
+  - row: 0
+    column: 7
+  - row: 3
+    column: 8
+  - row: 3
+    column: 9
+  - row: 4
+    column: 10
+  - row: 4
+    column: 11
+  - row: 0
+    column: 12
+  - row: 0
+    column: 13
+  - row: 0
+    column: 14
+  - row: 0
+    column: 15
 --- !u!1 &1120495482
 GameObject:
   m_ObjectHideFlags: 0
@@ -1513,7 +1630,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1993345071
 MonoBehaviour:
   m_ObjectHideFlags: 0
