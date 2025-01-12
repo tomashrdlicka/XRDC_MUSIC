@@ -12,6 +12,11 @@ public class OnboardingManager : MonoBehaviour
     public bool isPlayStepDone   = false; 
     public bool isPauseStepDone  = false;  
 
+    [Header("Audio Settings")]
+    public AudioSource audioSourceNarrative;            // Assign via Inspector or dynamically create one
+    public AudioClip[] narrativeClips;         // Array of narrative voiceover clips
+    private int currentAudioIndex = 0;         // Track the current audio clip
+
     public InstrumentType requiredInstrument = InstrumentType.Piano;
     GameObject instrumentMenuObj;
 
@@ -90,6 +95,7 @@ public class OnboardingManager : MonoBehaviour
 
     private void Start()
     {   
+        audioSourceNarrative = gameObject.AddComponent<AudioSource>();
         instrumentMenuObj = GameObject.Find("InstrumentMenu");
         instrumentMenuObj.SetActive(false);
 
@@ -110,7 +116,16 @@ public class OnboardingManager : MonoBehaviour
         Debug.Log("RingGridManager initialized. Starting onboarding...");
         if (onboardingMode)
         {
-            StartPianoMelodyPlacing();
+            DisableAllCells();
+            yield return StartCoroutine(WaitForSeconds(3f));
+            PlayNarrativeClip(0); 
+            yield return WaitForAudioClipToFinish();
+            PlayNarrativeClip(1); 
+            yield return WaitForAudioClipToFinish();
+            PlayNarrativeClip(24); 
+            yield return WaitForAudioClipToFinish();
+            Debug.Log("wait over");
+            StartCoroutine(StartPianoMelodyPlacing());
         }
     }
 
@@ -121,41 +136,91 @@ public class OnboardingManager : MonoBehaviour
     /// <summary>
     /// Called to begin placing the first melody (e.g., Piano).
     /// </summary>
-    public void StartPianoMelodyPlacing()
+    public IEnumerator StartPianoMelodyPlacing()
     {
+        
+        Debug.Log("started");
+        yield return StartCoroutine(WaitForSeconds(2f));
+        PlayNarrativeClip(2); 
+        yield return WaitForAudioClipToFinish();
+        PlayNarrativeClip(3); 
+        yield return WaitForAudioClipToFinish();
+        PlayNarrativeClip(4); 
+        yield return WaitForAudioClipToFinish();
+
         doingFirstMelody = true;
         isMelodyComplete = false;
         currentStepIndex = -1;
+        yield return StartCoroutine(WaitForSeconds(1f));
+        PlayNarrativeClip(5); 
+        yield return WaitForAudioClipToFinish();
         GoToNextStep();
     }
 
     /// <summary>
     /// Steps through the currently active melody (pianoSteps if doingFirstMelody, else bassSteps).
     /// </summary>
+    private bool isFirstGoToNextStepCall = true;
+
     public void GoToNextStep()
+{
+    // If this is the first call, skip the random value logic
+
+    // Increment the step index
+    currentStepIndex++;
+
+    // Determine the melody array
+    NoteStep[] currentMelody = doingFirstMelody ? pianoSteps : bassSteps;
+
+    // Check if we've placed all notes in the current melody
+    if (currentStepIndex >= currentMelody.Length)
     {
-        // Increase step
-        currentStepIndex++;
-
-        // Decide which melody array to use
-        NoteStep[] currentMelody = doingFirstMelody ? pianoSteps : bassSteps;
-
-        // Check if we've placed all notes in the current melody
-        if (currentStepIndex >= currentMelody.Length)
-        {
-            // This melody is done
-            EndMelodyPlacing();
-            return;
-        }
-
-        // Normal step logic
-        NoteStep step = currentMelody[currentStepIndex];
-
-        // Lock all cells, highlight the target cell
-        DisableAllCells();
-        DisplayColumn(step.column);
-        HighlightAndEnableCell(step.row, step.column);
+        isFirstGoToNextStepCall = true;
+        EndMelodyPlacing();
+        return;
     }
+
+    if (isFirstGoToNextStepCall)
+    {
+        isFirstGoToNextStepCall = false; // Set the flag to false for subsequent calls
+    }
+    else
+    {
+        // Generate a random value (0 to 4)
+        int randomValue = Random.Range(0, 5);
+        Debug.Log($"Random value: {randomValue}");
+
+        // Play narrative clip based on the random value
+        if (randomValue == 0)
+        {
+            PlayNarrativeClip(6);
+        }
+        else if (randomValue == 1)
+        {
+            PlayNarrativeClip(7);
+        }
+        else if (randomValue == 2)
+        {
+            PlayNarrativeClip(8);
+        }
+        else if (randomValue == 3)
+        {
+            PlayNarrativeClip(9);
+        }
+        else
+        {
+            PlayNarrativeClip(10);
+        }
+    }
+
+    // Process the current step
+    NoteStep step = currentMelody[currentStepIndex];
+
+    // Lock all cells and highlight the target cell
+    DisableAllCells();
+    DisplayColumn(step.column);
+    HighlightAndEnableCell(step.row, step.column);
+}
 
     /// <summary>
     /// Called after finishing all notes in the current melody.
@@ -184,6 +249,22 @@ public class OnboardingManager : MonoBehaviour
         isPlayStepDone  = false;
         isPauseStepDone = false;
 
+        if (ringGridManager.GetGlobalInstrument() == InstrumentType.Piano)
+        {
+            yield return StartCoroutine(WaitForSeconds(1f));
+            PlayNarrativeClip(11); 
+            yield return WaitForAudioClipToFinish();
+            PlayNarrativeClip(12); 
+            yield return WaitForAudioClipToFinish();
+        }
+        if (ringGridManager.GetGlobalInstrument() == InstrumentType.Bass)
+        {
+            yield return StartCoroutine(WaitForSeconds(1f));
+            PlayNarrativeClip(12); 
+            yield return WaitForAudioClipToFinish();
+        }
+        
+        
         Debug.Log("Please press Play to hear the sequence...");
 
         // Wait until user pressed Play
@@ -191,9 +272,23 @@ public class OnboardingManager : MonoBehaviour
         {
             yield return null;
         }
-
+        if (ringGridManager.GetGlobalInstrument() == InstrumentType.Piano)
+        {
+            yield return StartCoroutine(WaitForSeconds(4f));
+            PlayNarrativeClip(13); 
+            yield return WaitForAudioClipToFinish();
+            yield return StartCoroutine(WaitForSeconds(4f));
+            PlayNarrativeClip(14); 
+            yield return WaitForAudioClipToFinish();
+        }
+        if (ringGridManager.GetGlobalInstrument() == InstrumentType.Bass)
+        {
+            yield return StartCoroutine(WaitForSeconds(4f));
+            yield return StartCoroutine(WaitForSeconds(4f));
+            PlayNarrativeClip(22); 
+            yield return WaitForAudioClipToFinish();
+        }
         Debug.Log("Sequence playing! Now press Pause.");
-
         // Wait until user pressed Pause
         while (!isPauseStepDone)
         {
@@ -202,6 +297,18 @@ public class OnboardingManager : MonoBehaviour
 
         // At this point, the user did play & pause for this melody
         Debug.Log("Play/Pause steps complete for this melody.");
+        if (ringGridManager.GetGlobalInstrument() == InstrumentType.Piano)
+        {
+            yield return StartCoroutine(WaitForSeconds(1f));
+            PlayNarrativeClip(15); 
+            yield return WaitForAudioClipToFinish();
+            PlayNarrativeClip(16); 
+            yield return WaitForAudioClipToFinish();
+            yield return StartCoroutine(WaitForSeconds(2f));
+            PlayNarrativeClip(17); 
+            yield return WaitForAudioClipToFinish();
+        }
+
 
         ringGridManager.SetSwitchInstruments(true);
         instrumentMenuObj.SetActive(true);
@@ -216,7 +323,22 @@ public class OnboardingManager : MonoBehaviour
         {
             // We finished the second melody (Bass). Now we can finalize.
             Debug.Log("Done with second melody. Resetting grid & ending onboarding...");
+            yield return StartCoroutine(WaitForSeconds(1f));
+            PlayNarrativeClip(23); 
+            yield return WaitForAudioClipToFinish();
+            yield return StartCoroutine(WaitForSeconds(2f));
+            PlayNarrativeClip(25); 
+            yield return WaitForAudioClipToFinish();
+            yield return StartCoroutine(WaitForSeconds(1f));
+            PlayNarrativeClip(26); 
+            yield return WaitForAudioClipToFinish(); 
+            yield return StartCoroutine(WaitForSeconds(1f));
+            PlayNarrativeClip(27); 
+            yield return WaitForAudioClipToFinish(); 
             ringGridManager.ResetAll();  // Or ringGridManager.ResetAll() if you have that
+            yield return StartCoroutine(WaitForSeconds(1f));
+            PlayNarrativeClip(1); 
+            yield return WaitForAudioClipToFinish(); 
             EndOnboarding();
         }
     }
@@ -238,7 +360,12 @@ public class OnboardingManager : MonoBehaviour
         {
             yield return null;
         }
-
+         PlayNarrativeClip(18); 
+        yield return WaitForAudioClipToFinish();
+        PlayNarrativeClip(20); 
+        yield return WaitForAudioClipToFinish();
+        PlayNarrativeClip(21); 
+        yield return WaitForAudioClipToFinish();
         Debug.Log("Bass instrument selected! Start placing the second melody.");
         StartBassMelodyPlacing();
     }
@@ -377,5 +504,42 @@ public class OnboardingManager : MonoBehaviour
         isMelodyComplete = false;
         EnableAllCells(); // Re-enable everything if desired
     }
+
+    //NARRATIVE FUNCTIONS
+    public void PlayNarrativeClip(int index)
+    {
+        if (index < 0 || index >= narrativeClips.Length)
+        {
+            Debug.LogWarning($"Invalid narrative clip index: {index}");
+            return;
+        }
+
+        currentAudioIndex = index;
+        audioSourceNarrative.clip = narrativeClips[index];
+        audioSourceNarrative.Play();
+    }
+
+    /// <summary>
+    /// Wait for the current audio clip to finish before triggering the next action.
+    /// </summary>
+    private IEnumerator WaitForAudioClipToFinish()
+    {
+        while (audioSourceNarrative.isPlaying)
+        {
+            yield return null; // Wait until the clip is done playing
+        }
+    }
+    private IEnumerator WaitForSeconds(float waitTime)
+    {
+        Debug.Log($"Waiting for {waitTime} seconds...");
+        
+        // Wait for the specified amount of time
+        yield return new WaitForSeconds(waitTime);
+        
+        // Code to execute after waiting
+        Debug.Log("Wait complete!");
+    }
+
+
 }
 

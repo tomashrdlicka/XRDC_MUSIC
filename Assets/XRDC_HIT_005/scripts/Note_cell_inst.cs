@@ -142,6 +142,7 @@ public class NoteCell : MonoBehaviour
     {
         if (onboardingManager.onboardingMode && ringGridManager.GetGlobalInstrument() != onboardingManager.requiredInstrument)
         {
+            onboardingManager.PlayNarrativeClip(19); 
             Debug.Log("You're not on the correct instrument right now!");
             return;
         }
