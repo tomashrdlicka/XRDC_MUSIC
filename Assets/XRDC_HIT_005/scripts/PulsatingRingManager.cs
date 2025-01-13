@@ -14,6 +14,7 @@ public class PulsatingRingsManager : MonoBehaviour
 
     private bool isSpawning = false;
     private List<GameObject> activeRings = new List<GameObject>(); // Track spawned rings
+    public OnboardingManager onboarding; 
 
     void Start()
     {
@@ -26,6 +27,12 @@ public class PulsatingRingsManager : MonoBehaviour
     /// </summary>
     public void StartSpawning()
     {
+        if (onboarding != null && onboarding.onboardingMode && onboarding.isMelodyComplete && !onboarding.isPlayStepDone)
+        {
+            onboarding.isPlayStepDone = true;
+            Debug.Log("Onboarding: Marking Play step as done!");
+        }
+
         if (!isSpawning)
         {
             isSpawning = true;
