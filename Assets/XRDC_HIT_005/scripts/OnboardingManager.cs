@@ -95,6 +95,7 @@ public class OnboardingManager : MonoBehaviour
 
     private void Start()
     {   
+
         audioSourceNarrative = gameObject.AddComponent<AudioSource>();
         instrumentMenuObj = GameObject.Find("InstrumentMenu");
         instrumentMenuObj.SetActive(false);
@@ -117,7 +118,7 @@ public class OnboardingManager : MonoBehaviour
         if (onboardingMode)
         {
             DisableAllCells();
-            yield return StartCoroutine(WaitForSeconds(3f));
+            yield return StartCoroutine(WaitForSeconds(1f));
             PlayNarrativeClip(0); 
             yield return WaitForAudioClipToFinish();
             PlayNarrativeClip(1); 
@@ -140,7 +141,7 @@ public class OnboardingManager : MonoBehaviour
     {
         
         Debug.Log("started");
-        yield return StartCoroutine(WaitForSeconds(2f));
+        yield return StartCoroutine(WaitForSeconds(0.5f));
         PlayNarrativeClip(2); 
         yield return WaitForAudioClipToFinish();
         PlayNarrativeClip(3); 
@@ -151,7 +152,6 @@ public class OnboardingManager : MonoBehaviour
         doingFirstMelody = true;
         isMelodyComplete = false;
         currentStepIndex = -1;
-        yield return StartCoroutine(WaitForSeconds(1f));
         PlayNarrativeClip(5); 
         yield return WaitForAudioClipToFinish();
         GoToNextStep();
@@ -274,7 +274,7 @@ public class OnboardingManager : MonoBehaviour
         }
         if (ringGridManager.GetGlobalInstrument() == InstrumentType.Piano)
         {
-            yield return StartCoroutine(WaitForSeconds(4f));
+            yield return StartCoroutine(WaitForSeconds(3f));
             PlayNarrativeClip(13); 
             yield return WaitForAudioClipToFinish();
             yield return StartCoroutine(WaitForSeconds(4f));
@@ -283,7 +283,7 @@ public class OnboardingManager : MonoBehaviour
         }
         if (ringGridManager.GetGlobalInstrument() == InstrumentType.Bass)
         {
-            yield return StartCoroutine(WaitForSeconds(4f));
+            yield return StartCoroutine(WaitForSeconds(3f));
             yield return StartCoroutine(WaitForSeconds(4f));
             PlayNarrativeClip(22); 
             yield return WaitForAudioClipToFinish();
@@ -335,7 +335,7 @@ public class OnboardingManager : MonoBehaviour
             yield return StartCoroutine(WaitForSeconds(1f));
             PlayNarrativeClip(27); 
             yield return WaitForAudioClipToFinish(); 
-            ringGridManager.ResetAll();  // Or ringGridManager.ResetAll() if you have that
+            ringGridManager.SetReset(true);
             yield return StartCoroutine(WaitForSeconds(1f));
             PlayNarrativeClip(1); 
             yield return WaitForAudioClipToFinish(); 

@@ -38,6 +38,8 @@ public class NotePlayer : MonoBehaviour
         inputActions.Enable();
         inputActions.Gameplay.PlayComposition.performed += OnPlayComposition;
         inputActions.Gameplay.OnStop.performed += OnStop; 
+        inputActions.Gameplay.OnReset.performed += OnReset; 
+        
     }
 
     void OnDisable()
@@ -45,6 +47,7 @@ public class NotePlayer : MonoBehaviour
         // Unsubscribe and disable InputActions
         inputActions.Gameplay.PlayComposition.performed -= OnPlayComposition;
         inputActions.Gameplay.OnStop.performed -= OnStop;
+        inputActions.Gameplay.OnReset.performed -= OnReset;
         inputActions.Disable();
     }
 
@@ -58,6 +61,11 @@ public class NotePlayer : MonoBehaviour
     {
         // Trigger PlayComposition when the input is performed
         StopSequence();
+    }
+
+    void OnReset(InputAction.CallbackContext context)
+    {
+        gridManager.ResetAll();
     }
 
     public void StopSequence()

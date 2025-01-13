@@ -15,11 +15,13 @@ public class RingGridManager : MonoBehaviour
     // from the UI or keyboard
     [SerializeField] private InstrumentType globalInstrument;
     [SerializeField] private bool canSwitchInstruments = false;
+    [SerializeField] private bool canReset = false;
 
     private bool[] columnsEnabled; // Track whether each row is enabled
 
     void Start()
     {
+
 
         columnsEnabled = new bool[columns];
         // 2. By default, only row 0 is enabled
@@ -178,9 +180,19 @@ public class RingGridManager : MonoBehaviour
     {
         canSwitchInstruments = can;
     }
+    public void SetReset(bool can)
+    {
+        canReset = can;
+    }
 
     public void ResetAll()
 {
+    if (!canReset)
+        {
+            Debug.Log("Instrument switching not allowed right now.");
+            return;
+        }
+
     Debug.Log("Resetting the entire grid to its original state...");
 
     // 1. Reset all cells to their original state
@@ -217,6 +229,8 @@ public class RingGridManager : MonoBehaviour
     }
 
     Debug.Log("Grid reset complete.");
+    
+
 }
 
 private void HandResetAll()
