@@ -219,8 +219,8 @@ public class RingGridManager : MonoBehaviour
     columnsEnabled[0] = true;             // Enable only the first column
 
     // 3. Reset the global instrument to its default
-    globalInstrument = InstrumentType.Piano; // Change this to your desired default instrument
-    Debug.Log($"Global instrument reset to {globalInstrument}.");
+    //globalInstrument = InstrumentType.Piano; // Change this to your desired default instrument
+    //Debug.Log($"Global instrument reset to {globalInstrument}.");
 
     // 4. Re-enable the first column's cells
     for (int r = 0; r < rows; r++)
