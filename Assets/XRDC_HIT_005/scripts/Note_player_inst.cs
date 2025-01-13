@@ -100,10 +100,12 @@ public class NotePlayer : MonoBehaviour
         {
             yield break;
         }
+        
         int rows = gridManager.rows;
         int columns = gridManager.columns;
         playing = true;
         stop = false;
+        
         // Outer loop for infinite play
         while (infinite)
         {
@@ -135,13 +137,15 @@ public class NotePlayer : MonoBehaviour
 
                             if (chosenClip != null)
                             {
-                                //Debug.Log($" Row: {r}, Column: {c}  Playing Note - Instrument: {instrument}, PitchIndex: {pitchIndex}, Volume: {volume:F2}");
                                 AudioSource newSource = Instantiate(audioSourcePrefab, transform);
                                 newSource.clip = chosenClip;
                                 newSource.volume = volume;
                                 newSource.Play();
 
-                                Destroy(newSource.gameObject, noteDuration + 0.1f);
+                                // Instead of destroying immediately,
+                                // fade out and then destroy after 'noteDuration'.
+                                float fadeDuration = 0.1f; 
+                                StartCoroutine(FadeOutAndDestroy(newSource, noteDuration, fadeDuration));
                             }
                             else
                             {
@@ -150,10 +154,14 @@ public class NotePlayer : MonoBehaviour
                         }
                     }
                 }
+
+                // Wait for the length of the note before moving on
                 yield return new WaitForSeconds(noteDuration);
             }
         }
-        gridManager.ResetAllColumns(); // Ensure cleanup if the loop exits normally
+
+        // Cleanup if somehow we exit the while loop
+        gridManager.ResetAllColumns(); 
     }
 
     public void PlaySingleNote(NoteCell cell)
@@ -172,7 +180,9 @@ public class NotePlayer : MonoBehaviour
                 newSource.volume = volume;
                 newSource.Play();
 
-                Destroy(newSource.gameObject, noteDuration + 0.1f);
+                // Start fade-out coroutine instead of directly destroying the AudioSource
+                float fadeDuration = 0.1f; // Adjust fade duration as needed
+                StartCoroutine(FadeOutAndDestroy(newSource, noteDuration, fadeDuration));
             }
         }
     }
@@ -205,6 +215,29 @@ public class NotePlayer : MonoBehaviour
         }
 
         return null;
+    }
+
+    private IEnumerator FadeOutAndDestroy(AudioSource source, float noteDuration, float fadeDuration)
+    {
+        // Wait until it's time to start fading out
+        // (For example, start the fade a little before the noteDuration finishes.)
+        float waitTime = Mathf.Max(noteDuration - fadeDuration, 0f);
+        yield return new WaitForSeconds(waitTime);
+
+        float startVolume = source.volume;
+        float timeElapsed = 0f;
+
+        // Fade out over 'fadeDuration' seconds
+        while (timeElapsed < fadeDuration)
+        {
+            timeElapsed += Time.deltaTime;
+            float progress = Mathf.Clamp01(timeElapsed / fadeDuration);
+            source.volume = Mathf.Lerp(startVolume, 0f, progress);
+            yield return null;
+        }
+
+        // Done fading—destroy the GameObject
+        Destroy(source.gameObject);
     }
 }
 
