@@ -302,6 +302,8 @@ public class OnboardingManager : MonoBehaviour
             yield return StartCoroutine(WaitForSeconds(1f));
             PlayNarrativeClip(15); 
             yield return WaitForAudioClipToFinish();
+            ringGridManager.SetSwitchInstruments(true);
+            instrumentMenuObj.SetActive(true);
             PlayNarrativeClip(16); 
             yield return WaitForAudioClipToFinish();
             yield return StartCoroutine(WaitForSeconds(2f));
@@ -309,9 +311,6 @@ public class OnboardingManager : MonoBehaviour
             yield return WaitForAudioClipToFinish();
         }
 
-
-        ringGridManager.SetSwitchInstruments(true);
-        instrumentMenuObj.SetActive(true);
 
         if (doingFirstMelody)
         {
