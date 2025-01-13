@@ -911,7 +911,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8d6cf55ef0e0c404ca3e4ecb5a053344, type: 3}
   - {fileID: 8300000, guid: 7752a87bf044e40fd8f52d4d1279878e, type: 3}
   - {fileID: 8300000, guid: 9e29f15d2dc8646558198aaaa46149e4, type: 3}
-  padClips: []
+  padClips:
+  - {fileID: 8300000, guid: 4d0e197c8c8e94bc99bdb126970567f9, type: 3}
+  - {fileID: 8300000, guid: 56c3e84d8cdb04773af807a173f5eb4e, type: 3}
+  - {fileID: 8300000, guid: 4de04e06ad08a4e9d9582cb987e3990b, type: 3}
+  - {fileID: 8300000, guid: c91e45002c6aa4b129181346e2bb29f2, type: 3}
+  - {fileID: 8300000, guid: cdf6eb0b7ffe64cbab2edb46b0d43d5f, type: 3}
+  - {fileID: 8300000, guid: ff20356ccf8c64f63a67fc3c96aabc49, type: 3}
+  - {fileID: 8300000, guid: 44c6db239219b454da413d0a47fe8a23, type: 3}
   onboarding: {fileID: 1076626362}
 --- !u!1 &1351584179
 GameObject:
