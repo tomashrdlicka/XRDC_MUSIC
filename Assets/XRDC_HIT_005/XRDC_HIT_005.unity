@@ -621,6 +621,30 @@ MonoBehaviour:
   isMelodyComplete: 0
   isPlayStepDone: 0
   isPauseStepDone: 0
+  audioSourceNarrative: {fileID: 0}
+  narrativeClips:
+  - {fileID: 8300000, guid: b28f98e0f0445486baa424eace14c4ba, type: 3}
+  - {fileID: 8300000, guid: 4299cac179ab24015a9d02d10e53ba9a, type: 3}
+  - {fileID: 8300000, guid: 09244f88a5ed14c78a73ba8622e1fc33, type: 3}
+  - {fileID: 8300000, guid: 2dffa3c79643a4ef68d12d9203c5bc02, type: 3}
+  - {fileID: 8300000, guid: 821b7c58b76c943138d8475e6cf18806, type: 3}
+  - {fileID: 8300000, guid: d00db435c1d63447db4afce1459f5c0f, type: 3}
+  - {fileID: 8300000, guid: 9cbcffac977184522955acecaa58ec03, type: 3}
+  - {fileID: 8300000, guid: fdae5065bf8e9436290e0f668361b0fb, type: 3}
+  - {fileID: 8300000, guid: c7a5f4088f2304c63b7e84c96d9e1123, type: 3}
+  - {fileID: 8300000, guid: 6a86f8655d07a468f9fe90a0429c74ac, type: 3}
+  - {fileID: 8300000, guid: e12d8a5b05a7946968f45632f1c9ec79, type: 3}
+  - {fileID: 8300000, guid: 23979c1ef0a7c40178daef5b90e16926, type: 3}
+  - {fileID: 8300000, guid: 23572f2a986f140bcb3009fbd063a300, type: 3}
+  - {fileID: 8300000, guid: 61723ecce71844220a646dffccb31bec, type: 3}
+  - {fileID: 8300000, guid: 18a0a5841aad54257a264afe09bf18a1, type: 3}
+  - {fileID: 8300000, guid: 7c627a024f5574a4fb29963939a0f5fb, type: 3}
+  - {fileID: 8300000, guid: b1e0611fe5229493ca08c0791616f77e, type: 3}
+  - {fileID: 8300000, guid: 3802f73b7fb5346258f4b3ab47bb6046, type: 3}
+  - {fileID: 8300000, guid: 025d6d633cf8b4319b48b304745816af, type: 3}
+  - {fileID: 8300000, guid: 4fa622e8a6e2141ac922a55e1e00a23b, type: 3}
+  - {fileID: 8300000, guid: 8e35e3559cd784afeaceec9fb3bf1818, type: 3}
+  - {fileID: 8300000, guid: 456301e781067499fa338681a05d0a4e, type: 3}
   requiredInstrument: 0
   pianoSteps:
   - row: 2
@@ -9958,12 +9982,12 @@ PrefabInstance:
     - target: {fileID: 3250131624467271790, guid: 25b64842b0c0d4e8da1f176144def856,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.601
+      value: 0.797
       objectReference: {fileID: 0}
     - target: {fileID: 3250131624467271790, guid: 25b64842b0c0d4e8da1f176144def856,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.7563
+      value: 0.491
       objectReference: {fileID: 0}
     - target: {fileID: 3250131624467271790, guid: 25b64842b0c0d4e8da1f176144def856,
         type: 3}
