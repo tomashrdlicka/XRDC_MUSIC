@@ -911,14 +911,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8d6cf55ef0e0c404ca3e4ecb5a053344, type: 3}
   - {fileID: 8300000, guid: 7752a87bf044e40fd8f52d4d1279878e, type: 3}
   - {fileID: 8300000, guid: 9e29f15d2dc8646558198aaaa46149e4, type: 3}
-  drumsClips:
-  - {fileID: 8300000, guid: d52abe7d3a0c249d0a960c2f6f87f1fa, type: 3}
-  - {fileID: 8300000, guid: 03f299c3fcf0b4570a16e4db3623240b, type: 3}
-  - {fileID: 8300000, guid: 7399e3b0ff3864a37908b7d72854df06, type: 3}
-  - {fileID: 8300000, guid: a3975f534cd84426a9e485eb7bcdff7e, type: 3}
-  - {fileID: 8300000, guid: 5cf066e3475d24424bc2d955f324257f, type: 3}
-  - {fileID: 8300000, guid: 6715edc1a010d45fe9c7a171d2dd33f1, type: 3}
-  - {fileID: 8300000, guid: 9b508903f0e7b4d049aa1ad7550d8b53, type: 3}
+  padClips: []
   onboarding: {fileID: 1076626362}
 --- !u!1 &1351584179
 GameObject:
@@ -1251,6 +1244,7 @@ MonoBehaviour:
   notePlayer: {fileID: 1256957529}
   globalInstrument: 0
   canSwitchInstruments: 0
+  canReset: 0
 --- !u!114 &1456386055
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -26,11 +26,11 @@ public class NoteCell : MonoBehaviour
     // A dictionary from instrument type to that instrument's note data
     private Dictionary<InstrumentType, InstrumentNoteData> instrumentData;
 
-    // --- Child Renderers (e.g., for Piano, Lead, Bass, Drums) ---
+    // --- Child Renderers (e.g., for Piano, Lead, Bass, Pad) ---
     private Renderer pianoRenderer;
     private Renderer leadRenderer;
     private Renderer bassRenderer;
-    private Renderer drumsRenderer;
+    private Renderer padRenderer;
     public Renderer controlRenderer;
 
     private MeshRenderer[] cornerRenderers;
@@ -59,7 +59,7 @@ public class NoteCell : MonoBehaviour
         pianoRenderer = TryGetChildRenderer("Piano_Prefab");
         leadRenderer  = TryGetChildRenderer("Lead_Prefab");
         bassRenderer  = TryGetChildRenderer("Bass_Prefab");
-        drumsRenderer = TryGetChildRenderer("Drums_Prefab");
+        padRenderer = TryGetChildRenderer("Pad_Prefab");
         controlRenderer = TryGetChildRenderer("Control_Sphere");
 
          Transform corners = transform.Find("Corners");
@@ -288,9 +288,9 @@ private void UpdateRendererAndChild(Renderer parentRenderer, bool isEnabled)
         bool bassHasNote = instrumentData[InstrumentType.Bass].hasNote;
         UpdateRendererAndChild(bassRenderer, bassHasNote);
 
-        // Drums
-        bool drumsHasNote = instrumentData[InstrumentType.Drums].hasNote;
-        UpdateRendererAndChild(drumsRenderer, drumsHasNote);
+        // Padd
+        bool padHasNote = instrumentData[InstrumentType.Pad].hasNote;
+        UpdateRendererAndChild(padRenderer, padHasNote);
     }
 
 

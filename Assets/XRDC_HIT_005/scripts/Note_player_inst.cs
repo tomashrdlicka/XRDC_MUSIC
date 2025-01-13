@@ -12,7 +12,7 @@ public class NotePlayer : MonoBehaviour
     public AudioClip[] pianoClips;
     public AudioClip[] leadClips;
     public AudioClip[] bassClips;
-    public AudioClip[] drumsClips;
+    public AudioClip[] padClips;
 
     private bool infinite;
     private bool stop;
@@ -206,9 +206,9 @@ public class NotePlayer : MonoBehaviour
                     return bassClips[pitchIndex];
                 break;
 
-            case InstrumentType.Drums:
-                if (pitchIndex >= 0 && pitchIndex < drumsClips.Length)
-                    return drumsClips[pitchIndex];
+            case InstrumentType.Pad:
+                if (pitchIndex >= 0 && pitchIndex <padClips.Length)
+                    return padClips[pitchIndex];
                 break;
 
             // TODO: Add more instruments here

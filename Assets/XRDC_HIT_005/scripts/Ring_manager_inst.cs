@@ -208,7 +208,7 @@ public class RingGridManager : MonoBehaviour
                 cell.InitializeInstrumentData(InstrumentType.Piano, false, 0f, 0); // Clear note data
                 cell.InitializeInstrumentData(InstrumentType.Bass, false, 0f, 0);
                 cell.InitializeInstrumentData(InstrumentType.Lead, false, 0f, 0);
-                cell.InitializeInstrumentData(InstrumentType.Drums, false, 0f, 0);
+                cell.InitializeInstrumentData(InstrumentType.Pad, false, 0f, 0);
             }
         }
     }
