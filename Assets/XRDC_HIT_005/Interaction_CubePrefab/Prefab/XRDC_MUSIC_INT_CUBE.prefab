@@ -945,7 +945,7 @@ PrefabInstance:
     - target: {fileID: -4261824553893246909, guid: 55c0f90fec4f74e269d0085cd64e6008,
         type: 3}
       propertyPath: m_Name
-      value: Drums_Prefab
+      value: Pad_Prefab
       objectReference: {fileID: 0}
     - target: {fileID: -4165147271607456128, guid: 55c0f90fec4f74e269d0085cd64e6008,
         type: 3}
