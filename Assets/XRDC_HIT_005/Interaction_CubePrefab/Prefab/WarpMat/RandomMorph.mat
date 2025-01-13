@@ -117,7 +117,7 @@ Material:
     - _Surface: 0
     - _TimeMultiplier: -0.9869266
     - _TimeSpeed: 0.004
-    - _Transparency: 0.451
+    - _Transparency: 0.692
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
